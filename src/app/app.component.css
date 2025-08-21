@@ -1,0 +1,12 @@
+/* Styles de base pour l'application */
+:host {
+  display: block;
+  min-height: 100vh;
+  width: 100%;
+}
+
+/* Assurer que le header est correctement affiché */
+app-header {
+  display: block;
+  width: 100%;
+}

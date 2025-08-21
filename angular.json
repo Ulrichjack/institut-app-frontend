@@ -24,12 +24,33 @@
               {
                 "glob": "**/*",
                 "input": "public"
+              },
+              {
+                "glob": "**/*",
+                "input": "src/assets",
+                "output": "/assets"
               }
             ],
             "styles": [
-              "src/styles.css"
+              "node_modules/bootstrap/dist/css/bootstrap.min.css",
+              "src/assets/lib/animate/animate.min.css",
+              "src/assets/lib/lightbox/css/lightbox.min.css", 
+              "src/assets/lib/owlcarousel/assets/owl.carousel.min.css",
+              "src/assets/lib/owlcarousel/assets/owl.theme.default.min.css",
+              "src/styles.scss",
+              "src/assets/css/style.css",
+              "src/assets/css/fixes.css"
             ],
-            "scripts": []
+            "scripts": [
+               "src/assets/lib/jquery/jquery.min.js",
+               "src/assets/lib/easing/easing.min.js",
+               "src/assets/lib/waypoints/waypoints.min.js",
+               "src/assets/lib/counterup/counterup.min.js",
+               "src/assets/lib/owlcarousel/owl.carousel.min.js",
+               "src/assets/lib/lightbox/js/lightbox.min.js",
+               "src/assets/lib/wow/wow.min.js",
+               "src/assets/js/main.js"
+            ]
           },
           "configurations": {
             "production": {
@@ -92,5 +113,8 @@
         }
       }
     }
+  },
+  "cli": {
+    "analytics": false
   }
 }
