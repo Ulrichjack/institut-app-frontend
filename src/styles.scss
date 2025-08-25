@@ -1,5 +1,11 @@
 /* You can add global styles to this file, and also import other style files */
-/* Nous n'utilisons plus @import "../scss/bootstrap.scss" car nous utilisons la version CDN */
+
+/* Import our modern Sass bootstrap setup */
+@use 'assets/scss/bootstrap';
+
+/* Alternative: Use our custom variables and mixins directly */
+// @use 'assets/scss/variables' as vars;
+// @use 'assets/scss/mixins/breakpoints' as bp;
 
 /* Styles globaux pour assurer la visibilité correcte */
 body {

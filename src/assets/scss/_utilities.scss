@@ -1,0 +1,54 @@
+// Modern Sass utilities using @use and @forward
+@use 'sass:map';
+@use 'variables' as vars;
+
+// Utility classes using modern Sass syntax
+.u-text-primary {
+  color: vars.$primary !important;
+}
+
+.u-text-secondary {
+  color: vars.$secondary !important;
+}
+
+.u-bg-primary {
+  background-color: vars.$primary !important;
+}
+
+.u-bg-secondary {
+  background-color: vars.$secondary !important;
+}
+
+// Generate spacing utilities using map iteration
+@each $key, $value in vars.$spacers {
+  .u-m-#{$key} {
+    margin: $value !important;
+  }
+  
+  .u-p-#{$key} {
+    padding: $value !important;
+  }
+  
+  .u-mt-#{$key} {
+    margin-top: $value !important;
+  }
+  
+  .u-mb-#{$key} {
+    margin-bottom: $value !important;
+  }
+  
+  .u-ml-#{$key} {
+    margin-left: $value !important;
+  }
+  
+  .u-mr-#{$key} {
+    margin-right: $value !important;
+  }
+}
+
+// Font size utilities
+@each $key, $value in vars.$font-sizes {
+  .u-fs-#{$key} {
+    font-size: $value !important;
+  }
+}

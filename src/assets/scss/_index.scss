@@ -1,0 +1,8 @@
+// Modern Sass: Main index file using @forward
+// This replaces the old @import pattern with the new @forward pattern
+
+// Forward core Sass modules
+@forward 'variables';
+@forward 'functions';
+@forward 'mixins';
+@forward 'utilities';
