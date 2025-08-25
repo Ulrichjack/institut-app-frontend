@@ -1,0 +1,30 @@
+// Example of modern Sass usage with @use
+// This demonstrates how to access variables and mixins with the new syntax
+
+@use 'sass:map';
+@use 'variables' as vars;
+@use 'mixins/breakpoints' as bp;
+
+.example-component {
+  color: vars.$primary;
+  background-color: vars.$light;
+  
+  @include bp.media-breakpoint-up(md) {
+    padding: map.get(vars.$spacers, 4);
+  }
+  
+  &:hover {
+    background-color: vars.$secondary;
+  }
+}
+
+.custom-button {
+  $local-color: vars.$dark;
+  
+  background: $local-color;
+  border-radius: vars.$border-radius;
+  
+  @include bp.media-breakpoint-down(sm) {
+    font-size: map.get(vars.$font-sizes, 6);
+  }
+}
