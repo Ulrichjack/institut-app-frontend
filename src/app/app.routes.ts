@@ -11,6 +11,13 @@ export const routes: Routes = [
   { path: 'about', component: AboutComponent },
   { path: 'contact', component: ContactComponent },
   { path: 'formations', component: FormationsComponent },
+  { path: 'service', component: HomeComponent }, // Remplacer par le bon composant quand créé
+  { path: 'price', component: HomeComponent }, // Remplacer par le bon composant quand créé
+  { path: 'team', component: HomeComponent }, // Remplacer par le bon composant quand créé
+  { path: 'testimonial', component: HomeComponent }, // Remplacer par le bon composant quand créé
+  { path: 'gallery', component: HomeComponent }, // Remplacer par le bon composant quand créé
+  { path: 'appointment', component: HomeComponent }, // Remplacer par le bon composant quand créé
+  { path: '404', component: HomeComponent }, // Remplacer par le bon composant quand créé
   { path: 'text', component: HeaderComponent},
   { path: '**', redirectTo: '' }
 ];
