@@ -1,0 +1,15 @@
+<div class="gallery-list">
+  <h2>Galerie</h2>
+  <div class="image-grid">
+    <div *ngFor="let img of images" class="image-item">
+      <img [src]="img.url" [alt]="img.titre">
+      <div>{{ img.titre }}</div>
+      <small>{{ img.description }}</small>
+    </div>
+  </div>
+  <div class="pagination">
+    <button (click)="prevPage()" [disabled]="page === 0">Page précédente</button>
+    <span>Page {{ page + 1 }} sur {{ totalPages }}</span>
+    <button (click)="nextPage()" [disabled]="page >= totalPages - 1">Page suivante</button>
+  </div>
+</div>

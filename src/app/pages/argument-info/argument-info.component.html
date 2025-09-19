@@ -1,0 +1,10 @@
+  <h2>VOS<span class="highlight"> AVANTAGES</span></h2>
+<div class="arguments-list">
+  <div class="argument" *ngFor="let arg of arguments">
+    <div class="icon" *ngIf="arg.icon">
+      <img [src]="arg.icon" alt="icon" />
+    </div>
+    <h3>{{ arg.title }}</h3>
+    <p>{{ arg.description }}</p>
+  </div>
+</div>

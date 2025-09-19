@@ -1,0 +1,146 @@
+<section class="hero-section position-relative overflow-hidden">
+  <!-- Décorations background -->
+  <div class="bg-icon top-right">
+    <i class="fas fa-spa"></i>
+  </div>
+  <div class="bg-icon bottom-left">
+    <i class="fas fa-leaf"></i>
+  </div>
+
+  <div class="container position-relative">
+    <!-- Hero principal -->
+    <div class="hero-content text-center">
+      <!-- Badge d’intro -->
+      <div class="hero-badge d-inline-flex align-items-center">
+        <!-- <span class="badge-icon">
+          <i class="fas fa-crown text-white"></i>
+        </span> -->
+        <span class="badge-text">Vous souhaitez exceller dans le domaine de la beauté ?</span>
+      </div>
+
+      <!-- Titre principal -->
+      <h1 class="hero-title">
+        Rejoignez la famille
+        <span class="highlighted-title">
+          <br>Beauty Empire Excellence
+          <span class="title-underline"></span>
+        </span>
+      </h1>
+
+      <p class="hero-desc">
+        Votre centre de formation en Beauté existe depuis <strong class="text-beauty-primary">2004</strong>.<br>
+        Formations pointues <strong>pratique &amp; théorie</strong>.<br>
+        Accessible dès <strong>15 ans et plus, niveau CEP</strong>.
+      </p>
+
+      <!-- Citation mise en valeur -->
+      <div class="hero-quote">
+        <i class="fas fa-quote-left quote-icon"></i>
+        <span>
+          Si vous souhaitez devenir un expert ou experte avec une formation courte et de qualité, nous sommes
+          <span class="text-beauty-primary fw-bold">"le meilleur accompagnement pour gagner du temps"</span>.
+        </span>
+        <i class="fas fa-quote-right quote-icon-secondary"></i>
+      </div>
+    </div>
+
+    <!-- Avantages -->
+    <div class="row hero-features">
+      <div class="col-lg-4">
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-clock"></i>
+          </div>
+          <h5>Formations Flexibles &amp; Adaptées</h5>
+          <p>Programmes conçus pour s'adapter à votre rythme et vos objectifs professionnels, avec horaires modulables.</p>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-graduation-cap"></i>
+          </div>
+          <h5>Théorie + Pratique Excellence</h5>
+          <p>Un équilibre parfait entre connaissances théoriques solides et pratiques professionnelles intensives.</p>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-trophy"></i>
+          </div>
+          <h5>Opportunités Prometteuses</h5>
+          <p>Ouvrez-vous les portes d'une carrière florissante dans le secteur en pleine expansion de la beauté.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Separator -->
+    <div class="hero-separator">
+      <span class="sep-icon"><i class="fas fa-star"></i></span>
+      <span class="sep-line"></span>
+      <span class="sep-icon"><i class="fas fa-heart"></i></span>
+      <span class="sep-line"></span>
+      <span class="sep-icon"><i class="fas fa-star"></i></span>
+    </div>
+  </div>
+
+</section>
+
+
+<section class="formations-section">
+  <div class="container">
+    <div class="section-title text-center mb-5">
+      <h2>NOS FORMATIONS EN <span class="highlight">ESTHETIQUE</span></h2>
+    </div>
+    <div class="row justify-content-center formations-list">
+      <!-- Une seule fois le ngFor sur la formation-card -->
+      <div class="col-lg-4 col-md-6 formation-card" *ngFor="let formation of formations">
+        <div class="img-wrap position-relative">
+          <img [src]="formation.photoPrincipale" [alt]="formation.nom" class="formation-img" />
+          <!-- Badge promo sur image -->
+          <span *ngIf="formation.promoActive" class="promo-badge">
+            <i class="fas fa-bolt"></i> -{{ formation.pourcentageReduction }}%
+          </span>
+          <!-- Badge certificat sur image -->
+          <span *ngIf="formation.certificatDelivre" class="cert-badge">
+            <i class="fas fa-certificate"></i> Certificat
+          </span>
+        </div>
+        <div class="formation-card-body">
+          <h3 class="formation-title mb-2">{{ formation.nom }}</h3>
+          <div class="desc-short mb-2">{{ formation.description }}</div>
+          <!-- Social Proof -->
+          <div class="social-proof mb-2" *ngIf="formation.messageSocialProof || formation.placesRestantes">
+            <i class="fas fa-users me-1 text-success"></i>
+            <span *ngIf="formation.messageSocialProof">{{ formation.messageSocialProof }}</span>
+            <span *ngIf="formation.placesRestantes" class="ms-2 text-success">
+              • {{ formation.placesRestantes }} places restantes
+            </span>
+          </div>
+          <!-- Taux de remplissage -->
+          <div *ngIf="formation.tauxRemplissage" class="mb-2">
+            <div class="progress" style="height: 6px;">
+              <div class="progress-bar"
+                [style.width.%]="formation.tauxRemplissage"
+                [attr.aria-valuenow]="formation.tauxRemplissage"
+                [attr.aria-valuemin]="0"
+                [attr.aria-valuemax]="100"></div>
+            </div>
+            <small class="text-muted">{{ formation.tauxRemplissage | number:'1.0-0' }}% complet</small>
+          </div>
+          <a (click)="voirDetails(formation.slug)" class="btn-en-savoir">En savoir +</a>
+        </div>
+      </div>
+      <!-- Section "Plus de cours / Autres formations" -->
+      <div class="more-courses-section text-center mt-5">
+        <h4 class="fw-bold mb-3">Vous souhaitez découvrir d'autres formations ?</h4>
+        <p class="text-muted mb-4">Explorez notre catalogue complet et trouvez la formation qui vous correspond !</p>
+        <a routerLink="/formations" class="btn btn-beauty-primary btn-lg px-5">
+          <i class="fas fa-layer-group me-2"></i>
+          Voir toutes les formations
+        </a>
+      </div>
+    </div>
+  </div>
+</section>

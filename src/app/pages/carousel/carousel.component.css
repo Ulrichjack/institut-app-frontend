@@ -1,0 +1,284 @@
+/*** Carousel IBE Style - Inspired by Formabeaute ***/
+
+.carousel-header {
+    position: relative;
+    overflow: hidden;
+}
+
+.carousel-item {
+    position: relative;
+    min-height: 100vh;
+}
+
+.carousel-item img {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+}
+
+/* Cache les boutons de navigation */
+.carousel-control-prev,
+.carousel-control-next {
+    display: none !important;
+}
+
+/* Style des indicateurs personnalisés */
+#carouselId .carousel-indicators {
+    bottom: 30px;
+    z-index: 10;
+}
+
+#carouselId .carousel-indicators li {
+    border-top: 8px solid rgba(255, 255, 255, 0.6);
+    border-bottom: 8px solid rgba(255, 255, 255, 0.6);
+    border-right: 4px solid rgba(255, 255, 255, 0.6);
+    border-left: 4px solid rgba(255, 255, 255, 0.6);
+    margin-right: 8px;
+    border-radius: 8px;
+    transition: all 0.5s ease;
+    background: rgba(255, 255, 255, 0.4);
+}
+
+#carouselId .carousel-indicators li.active {
+    background: #FF4F9D;
+    border-color: #FF4F9D;
+    border-right: 12px solid #FF4F9D;
+    border-left: 12px solid #FF4F9D;
+    transform: scale(1.1);
+}
+
+/* Positionnement du contenu - Carré à gauche */
+.carousel-caption {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+    width: auto;
+    max-width: none;
+    text-align: left;
+    padding: 0;
+    z-index: 5;
+}
+
+/* Le carré de contenu inspiré de Formabeaute */
+.carousel-caption .content-box {
+    background: linear-gradient(135deg,
+        rgba(255, 79, 157, 0.95) 0%,
+        rgba(136, 76, 210, 0.95) 100%);
+    padding: 40px 50px 40px 40px;
+    margin-left: 40px;
+    max-width: 500px;
+    border-radius: 0 20px 20px 0;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(10px);
+    position: relative;
+}
+
+/* Effet de bordure dorée */
+.carousel-caption .content-box::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, #FFD700, #FFA500);
+    border-radius: 0 20px 20px 0;
+    padding: 3px;
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask-composite: subtract;
+    z-index: -1;
+}
+
+/* Typographie du slogan */
+.carousel-caption h4 {
+    color: #FFD700;
+    font-size: 1rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 15px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.carousel-caption h1 {
+    color: white;
+    font-size: 2.8rem;
+    font-weight: 700;
+    line-height: 1.1;
+    margin-bottom: 20px;
+    text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.4);
+}
+
+.carousel-caption p {
+    color: rgba(255, 255, 255, 0.95);
+    font-size: 1.1rem;
+    line-height: 1.6;
+    margin-bottom: 25px;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+/* Boutons d'action */
+.carousel-caption .btn {
+    border: none;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 12px 25px;
+    border-radius: 25px;
+    transition: all 0.3s ease;
+    margin-right: 10px;
+    position: relative;
+    overflow: hidden;
+}
+
+.carousel-caption .btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    transition: left 0.5s ease;
+}
+
+.carousel-caption .btn:hover::before {
+    left: 100%;
+}
+
+.btn-light {
+    background: rgba(255, 255, 255, 0.9);
+    color: #1C1A1D;
+    backdrop-filter: blur(5px);
+}
+
+.btn-light:hover {
+    background: white;
+    color: #FF4F9D;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+}
+
+.btn-primary {
+    background: linear-gradient(45deg, #FFD700, #FFA500);
+    color: #1C1A1D;
+    font-weight: 700;
+}
+
+.btn-primary:hover {
+    background: linear-gradient(45deg, #FFA500, #FFD700);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(255, 215, 0, 0.4);
+}
+
+/* Animations d'entrée */
+@keyframes slideInFromLeft {
+    0% {
+        opacity: 0;
+        transform: translateX(-100px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.carousel-caption .content-box {
+    animation: slideInFromLeft 1s ease-out;
+}
+
+/* Responsive Design */
+@media (max-width: 992px) {
+    .carousel-caption .content-box {
+        margin-left: 20px;
+        max-width: 450px;
+        padding: 35px 40px 35px 30px;
+    }
+
+    .carousel-caption h1 {
+        font-size: 2.4rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .carousel-item {
+        min-height: 80vh;
+    }
+
+    .carousel-caption {
+        position: absolute;
+        top: auto;
+        bottom: 20px;
+        left: 0;
+        right: 0;
+        transform: none;
+    }
+
+    .carousel-caption .content-box {
+        margin: 0 20px;
+        max-width: none;
+        padding: 30px 25px;
+        border-radius: 15px;
+        text-align: center;
+    }
+
+    .carousel-caption h1 {
+        font-size: 2rem;
+        margin-bottom: 15px;
+    }
+
+    .carousel-caption p {
+        font-size: 1rem;
+        margin-bottom: 20px;
+    }
+
+    .carousel-caption .btn {
+        display: block;
+        width: 100%;
+        margin: 8px 0;
+    }
+}
+
+@media (max-width: 576px) {
+    .carousel-item {
+        min-height: 70vh;
+    }
+
+    .carousel-caption .content-box {
+        margin: 0 15px;
+        padding: 25px 20px;
+    }
+
+    .carousel-caption h1 {
+        font-size: 1.8rem;
+    }
+
+    .carousel-caption h4 {
+        font-size: 0.9rem;
+        margin-bottom: 10px;
+    }
+}
+
+/* Animation au hover de l'item */
+.carousel-item:hover img {
+    transform: scale(1.05);
+    transition: transform 10s ease;
+}
+
+/* Effet de particules (optionnel) */
+.carousel-caption .content-box::after {
+    content: '✨';
+    position: absolute;
+    top: -10px;
+    right: 20px;
+    font-size: 1.5rem;
+    animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+}

@@ -1,0 +1,191 @@
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-10">
+      <div class="card shadow-lg p-0">
+        <div class="row g-0">
+          <!-- Image et upload à gauche -->
+          <div class="col-md-5 d-flex flex-column align-items-center justify-content-center bg-light py-5">
+            <div class="image-upload-box mb-3">
+              <label for="photoPrincipale" class="form-label mb-2 fw-bold">Photo principale de la formation</label>
+              <input type="file" id="photoPrincipale" (change)="onFileSelected($event)" accept="image/*" class="form-control">
+            </div>
+            <div *ngIf="imagePreview" class="image-preview-box mt-3">
+              <img [src]="imagePreview" alt="Aperçu de la formation" class="img-fluid rounded shadow" style="max-width: 320px; max-height: 320px; object-fit: cover;">
+            </div>
+            <div *ngIf="!imagePreview" class="image-preview-placeholder text-muted mt-3">
+              <span class="d-block mb-2"><i class="bi bi-image" style="font-size: 3rem;"></i></span>
+              <span>Aucune image sélectionnée</span>
+            </div>
+          </div>
+          <!-- Formulaire à droite -->
+          <div class="col-md-7">
+            <div class="card-body p-4">
+              <h2 class="fw-bold text-center mb-4">Créer une nouvelle formation</h2>
+              <div *ngIf="successMessage" class="alert alert-success" role="alert">
+                {{ successMessage }}
+              </div>
+              <div *ngIf="errorMessage" class="alert alert-danger" role="alert">
+                {{ errorMessage }}
+              </div>
+              <form [formGroup]="formationForm" (ngSubmit)="onSubmit()">
+                <!-- Champs essentiels -->
+                <div class="mb-3">
+                  <label for="nom" class="form-label">Nom <span class="text-danger">*</span></label>
+                  <input type="text" id="nom" formControlName="nom" class="form-control"
+                         [class.is-invalid]="formationForm.get('nom')?.invalid && formationForm.get('nom')?.touched">
+                  <div class="invalid-feedback">Le nom de la formation est obligatoire (min 3 caractères).</div>
+                </div>
+                <div class="mb-3">
+                  <label for="description" class="form-label">Description <span class="text-danger">*</span></label>
+                  <textarea id="description" formControlName="description" class="form-control" rows="3"
+                            [class.is-invalid]="formationForm.get('description')?.invalid && formationForm.get('description')?.touched"></textarea>
+                  <div class="invalid-feedback">La description est obligatoire (min 10 caractères).</div>
+                </div>
+                <div class="row">
+                  <div class="col-md-6 mb-3">
+                    <label for="duree" class="form-label">Durée <span class="text-danger">*</span></label>
+                    <input type="text" id="duree" formControlName="duree" class="form-control"
+                           [class.is-invalid]="formationForm.get('duree')?.invalid && formationForm.get('duree')?.touched">
+                    <div class="invalid-feedback">La durée est obligatoire.</div>
+                  </div>
+                  <div class="col-md-6 mb-3">
+                    <label for="categorie" class="form-label">Catégorie <span class="text-danger">*</span></label>
+                    <input type="text" id="categorie" formControlName="categorie" class="form-control"
+                           [class.is-invalid]="formationForm.get('categorie')?.invalid && formationForm.get('categorie')?.touched">
+                    <div class="invalid-feedback">La catégorie est obligatoire.</div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-6 mb-3">
+                    <label for="fraisInscription" class="form-label">Frais d'inscription (FCFA) <span class="text-danger">*</span></label>
+                    <input type="number" id="fraisInscription" formControlName="fraisInscription" class="form-control"
+                           [class.is-invalid]="formationForm.get('fraisInscription')?.invalid && formationForm.get('fraisInscription')?.touched">
+                    <div class="invalid-feedback">Frais d'inscription obligatoire (&gt; 0).</div>
+                  </div>
+                  <div class="col-md-6 mb-3">
+                    <label for="prix" class="form-label">Prix (FCFA) <span class="text-danger">*</span></label>
+                    <input type="number" id="prix" formControlName="prix" class="form-control"
+                           [class.is-invalid]="formationForm.get('prix')?.invalid && formationForm.get('prix')?.touched">
+                    <div class="invalid-feedback">Prix obligatoire (&gt; 0).</div>
+                  </div>
+                </div>
+                <!-- Options avancées (accordion) -->
+                <div class="mb-3">
+                  <button type="button" class="btn btn-outline-secondary w-100" (click)="openSection('advanced')">
+                    {{ activeSection === 'advanced' ? 'Masquer' : 'Afficher' }} les options avancées
+                  </button>
+                </div>
+                <div *ngIf="activeSection === 'advanced'" class="accordion mb-3">
+                  <div class="accordion-body bg-light rounded">
+                    <!-- Optionnel: contenu pédagogique, certificat, etc. -->
+                    <div class="form-check mb-2">
+                      <input class="form-check-input" type="checkbox" id="certificatDelivre" formControlName="certificatDelivre">
+                      <label class="form-check-label" for="certificatDelivre">
+                        Certificat délivré
+                      </label>
+                    </div>
+                    <div *ngIf="formationForm.get('certificatDelivre')?.value" class="mb-2">
+                      <label for="nomCertificat" class="form-label">Nom du Certificat</label>
+                      <input type="text" id="nomCertificat" formControlName="nomCertificat" class="form-control">
+                    </div>
+                    <label for="programme" class="form-label mt-2">Programme</label>
+                    <textarea id="programme" formControlName="programme" class="form-control mb-2" rows="2"></textarea>
+                    <label for="objectifs" class="form-label">Objectifs</label>
+                    <textarea id="objectifs" formControlName="objectifs" class="form-control mb-2" rows="2"></textarea>
+                    <label for="materielFourni" class="form-label">Matériel fourni</label>
+                    <textarea id="materielFourni" formControlName="materielFourni" class="form-control mb-2" rows="2"></textarea>
+                    <div class="row">
+                      <div class="col-md-6 mb-2">
+                        <label for="horaires" class="form-label">Horaires</label>
+                        <input type="text" id="horaires" formControlName="horaires" class="form-control">
+                      </div>
+                      <div class="col-md-6 mb-2">
+                        <label for="frequence" class="form-label">Fréquence</label>
+                        <input type="text" id="frequence" formControlName="frequence" class="form-control">
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-6 mb-2">
+                        <label for="nombrePlaces" class="form-label">Nombre de places</label>
+                        <input type="number" id="nombrePlaces" formControlName="nombrePlaces" class="form-control"
+                               [class.is-invalid]="formationForm.get('nombrePlaces')?.invalid && formationForm.get('nombrePlaces')?.touched">
+                        <div class="invalid-feedback">Au moins 1 place.</div>
+                      </div>
+                      <div class="col-md-6 mb-2">
+                        <label for="nombreInscritsAffiche" class="form-label">Inscrits affichés (social proof)</label>
+                        <input type="number" id="nombreInscritsAffiche" formControlName="nombreInscritsAffiche" class="form-control"
+                               [class.is-invalid]="formationForm.get('nombreInscritsAffiche')?.invalid && formationForm.get('nombreInscritsAffiche')?.touched">
+                        <div class="invalid-feedback">Ne peut être négatif.</div>
+                      </div>
+                    </div>
+                    <div class="form-check mb-2">
+                      <input class="form-check-input" type="checkbox" id="socialProofActif" formControlName="socialProofActif">
+                      <label class="form-check-label" for="socialProofActif">
+                        Activer le Social Proof
+                      </label>
+                    </div>
+                  </div>
+                </div>
+                <!-- Médias et Promotion (accordion) -->
+                <div class="mb-3">
+                  <button type="button" class="btn btn-outline-secondary w-100" (click)="openSection('media')">
+                    {{ activeSection === 'media' ? 'Masquer' : 'Afficher' }} Médias & Promotion
+                  </button>
+                </div>
+                <div *ngIf="activeSection === 'media'" class="accordion mb-3">
+                  <div class="accordion-body bg-light rounded">
+                    <!-- <label for="videoPresentation" class="form-label">URL vidéo présentation</label>
+                    <input type="url" id="videoPresentation" formControlName="videoPresentation" class="form-control mb-2"> -->
+                    <div class="form-check mb-2">
+                      <input class="form-check-input" type="checkbox" id="enPromotion" formControlName="enPromotion">
+                      <label class="form-check-label" for="enPromotion">
+                        Mettre la formation en promotion
+                      </label>
+                    </div>
+                    <div *ngIf="formationForm.get('enPromotion')?.value" class="row">
+                      <div class="col-md-4 mb-2">
+                        <label for="pourcentageReduction" class="form-label">Pourcentage de réduction (%)</label>
+                        <input type="number" id="pourcentageReduction" formControlName="pourcentageReduction" class="form-control"
+                               [class.is-invalid]="formationForm.get('pourcentageReduction')?.invalid && formationForm.get('pourcentageReduction')?.touched">
+                        <div class="invalid-feedback">Entre 0 et 100.</div>
+                      </div>
+                      <div class="col-md-4 mb-2">
+                        <label for="dateDebutPromo" class="form-label">Début promo</label>
+                        <input type="datetime-local" id="dateDebutPromo" formControlName="dateDebutPromo" class="form-control">
+                      </div>
+                      <div class="col-md-4 mb-2">
+                        <label for="dateFinPromo" class="form-label">Fin promo</label>
+                        <input type="datetime-local" id="dateFinPromo" formControlName="dateFinPromo" class="form-control">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- SEO (accordion) -->
+                <div class="mb-3">
+                  <button type="button" class="btn btn-outline-secondary w-100" (click)="openSection('seo')">
+                    {{ activeSection === 'seo' ? 'Masquer' : 'Afficher' }} Référencement (SEO)
+                  </button>
+                </div>
+                <div *ngIf="activeSection === 'seo'" class="accordion mb-3">
+                  <div class="accordion-body bg-light rounded">
+                    <label for="metaTitle" class="form-label">Meta Title</label>
+                    <input type="text" id="metaTitle" formControlName="metaTitle" class="form-control mb-2">
+                    <label for="metaDescription" class="form-label">Meta Description</label>
+                    <textarea id="metaDescription" formControlName="metaDescription" class="form-control mb-2" rows="2"></textarea>
+                  </div>
+                </div>
+                <!-- Submit -->
+                <div class="text-center mt-4">
+                  <button type="submit" class="btn btn-primary btn-lg px-5" [disabled]="formationForm.invalid || isLoading">
+                    <span *ngIf="!isLoading">Créer la formation</span>
+                    <span *ngIf="isLoading">Création en cours...</span>
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,100 @@
+.gallery-home {
+  padding: 2rem 0;
+
+$beauty-dark: #2a2a2a;
+$beauty-primary: #c785e1;
+
+h2 {
+      font-family: 'Playfair Display', serif;
+      font-weight: 700;
+      font-size: 2.7rem;
+      text-align: center;
+      color: $beauty-dark;
+      .highlight {
+        color: $beauty-primary;
+      }
+    }
+  .image-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    padding: 0 1rem;
+        margin-left: 50px;
+   margin-right: 50px;
+   }
+
+  .image-item {
+    background: #fff;
+    border-radius: 14px;
+    box-shadow: 0 2px 14px rgba(30, 41, 59, 0.08);
+    padding: 1rem;
+    text-align: center;
+    transition: transform 0.18s, box-shadow 0.18s;
+
+    &:hover {
+      transform: translateY(-4px) scale(1.03);
+      box-shadow: 0 6px 24px rgba(30, 41, 59, 0.16);
+    }
+
+    img {
+     //width: 100%;
+      max-width: 240px;
+      max-height: 220px;
+      object-fit: cover;
+      border-radius: 10px;
+      margin-bottom: 1rem;
+      box-shadow: 0 1px 8px #e1e1e1;
+    }
+
+    div {
+      font-size: 1.08rem;
+      font-weight: 600;
+      color: #2c5282;
+      margin-bottom: 0.35rem;
+    }
+
+    small {
+      color: #4a5568;
+      font-size: 0.97rem;
+      display: block;
+    }
+  }
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .gallery-home .image-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .gallery-home .image-grid {
+    grid-template-columns: 1fr;
+    gap: 1.2rem;
+  }
+  .gallery-home .image-item img {
+    max-width: 100%;
+    max-height: 200px;
+  }
+}
+
+.beauty-slogan {
+  margin: 2.6rem auto 0 auto;
+  text-align: center;
+  font-size: 1.28rem;
+  font-weight: 600;
+  color: #c785e1; // beauty-primary
+  letter-spacing: .01em;
+  background: linear-gradient(90deg,#faf6fb 60%,#fe87a2 110%);
+  border-radius: 12px;
+  padding: 1rem 0.7rem;
+  box-shadow: 0 4px 16px rgba(199, 133, 225, 0.08);
+  max-width: 700px;
+  margin-bottom: 15px;
+
+  strong {
+    color: #fe87a2; // beauty-secondary
+    font-weight: 700;
+  }
+}

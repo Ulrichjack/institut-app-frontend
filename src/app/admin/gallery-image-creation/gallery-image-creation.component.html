@@ -1,0 +1,80 @@
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <div class="card shadow-lg p-0">
+        <div class="row g-0">
+          <!-- Image et upload à gauche -->
+          <div class="col-md-5 d-flex flex-column align-items-center justify-content-center bg-light py-5">
+            <div class="image-upload-box mb-3 w-100">
+              <label for="imageFile" class="form-label mb-2 fw-bold">Image pour la galerie</label>
+              <input type="file" id="imageFile" (change)="onFileSelected($event)" accept="image/*" class="form-control">
+            </div>
+
+            <!-- Sinon, aperçu local -->
+            <div *ngIf="imagePreview" class="image-preview-box mt-3">
+              <img [src]="imagePreview" alt="Aperçu local" class="img-fluid rounded shadow" style="max-width: 320px; max-height: 320px; object-fit: cover;">
+              <div class="mt-2 text-secondary"><i class="bi bi-eye"></i> </div>
+            </div>
+            <!-- Placeholder si rien -->
+            <div *ngIf=" !imagePreview" class="image-preview-placeholder text-muted mt-3">
+              <span class="d-block mb-2"><i class="bi bi-image" style="font-size: 3rem;"></i></span>
+              <span>Aucune image sélectionnée</span>
+            </div>
+          </div>
+          <!-- Formulaire à droite -->
+          <div class="col-md-7">
+            <div class="card-body p-4">
+              <h2 class="fw-bold text-center mb-4">Ajouter une image à la galerie</h2>
+              <div *ngIf="successMessage" class="alert alert-success" role="alert">
+                {{ successMessage }}
+              </div>
+              <div *ngIf="errorMessage" class="alert alert-danger" role="alert">
+                {{ errorMessage }}
+              </div>
+              <form [formGroup]="imageForm" (ngSubmit)="onSubmit()">
+                <div class="mb-3">
+                  <label for="titre" class="form-label">Titre <span class="text-danger">*</span></label>
+                  <input type="text" id="titre" formControlName="titre" class="form-control"
+                         [class.is-invalid]="imageForm.get('titre')?.invalid && imageForm.get('titre')?.touched">
+                  <div class="invalid-feedback">Le titre est obligatoire (max 100 caractères).</div>
+                </div>
+                <div class="mb-3">
+                  <label for="description" class="form-label">Description</label>
+                  <textarea id="description" formControlName="description" class="form-control" rows="2"
+                            [class.is-invalid]="imageForm.get('description')?.invalid && imageForm.get('description')?.touched"></textarea>
+                  <div class="invalid-feedback">Max 500 caractères.</div>
+                </div>
+                <div class="mb-3">
+                  <label for="categorie" class="form-label">Catégorie <span class="text-danger">*</span></label>
+                  <select id="categorie" formControlName="categorie" class="form-select">
+                    <option value="EVENEMENT">Événement</option>
+                    <option value="FORMATION">Formation</option>
+                    <option value="INSTITUT">Institut</option>
+                  </select>
+                </div>
+                <div class="mb-3">
+                  <label class="form-label">Image publique ?</label>
+                  <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" id="isPublic" formControlName="isPublic">
+                    <label class="form-check-label" for="isPublic">{{ imageForm.get('isPublic')?.value ? 'Oui' : 'Non' }}</label>
+                  </div>
+                </div>
+                <!-- Optionnel : associer à une formation -->
+                <div class="mb-3">
+                  <label for="formationId" class="form-label">Associer à une formation (ID)</label>
+                  <input type="number" id="formationId" formControlName="formationId" class="form-control">
+                </div>
+                <div class="text-center mt-4">
+                  <button type="submit" class="btn btn-primary btn-lg px-5" [disabled]="imageForm.invalid  || isLoading">
+                    <span *ngIf="!isLoading">Ajouter l'image</span>
+                    <span *ngIf="isLoading">Envoi en cours...</span>
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -29,6 +29,4 @@ $link-decoration: none;
 
 $enable-negative-margins: true;
 
-@use "sass:math";
-@use "sass:color";
-@use "bootstrap/scss/bootstrap";
+@import "bootstrap/scss/bootstrap";

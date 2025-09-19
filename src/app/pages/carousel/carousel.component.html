@@ -1,0 +1,27 @@
+<div class="container-fluid carousel-header px-0">
+    <div id="carouselId" class="carousel slide carousel-fade" data-bs-ride="carousel" data-bs-interval="5000">
+        <ol class="carousel-indicators">
+            @for (slide of slides; track $index) {
+                <li data-bs-target="#carouselId" [attr.data-bs-slide-to]="$index" [class.active]="$index === 0"></li>
+            }
+        </ol>
+        <div class="carousel-inner" role="listbox">
+            @for (slide of slides; track $index) {
+                <div class="carousel-item" [class.active]="$index === 0">
+                    <img [src]="slide.src" [alt]="slide.title">
+                    <div class="carousel-caption">
+                        <div class="content-box">
+                            <h4>{{ slide.subtitle }}</h4>
+                            <h1>{{ slide.title }}</h1>
+                            <p>{{ slide.text }}</p>
+                            <div>
+                                <a class="btn btn-light" href="#formations">En Savoir Plus</a>
+                                <a class="btn btn-primary" href="#inscription">Je M'inscris</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>

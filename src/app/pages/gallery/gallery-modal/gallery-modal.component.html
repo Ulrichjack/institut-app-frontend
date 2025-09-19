@@ -1,0 +1,21 @@
+<div class="modal-backdrop" (click)="onClose()"></div>
+<div class="gallery-modal">
+  <button class="close-btn" (click)="onClose()" aria-label="Fermer">&times;</button>
+  <div class="modal-content">
+    <div class="image-area">
+      <img *ngIf="currentImage" [src]="currentImage.url" [alt]="currentImage.titre">
+      <div class="caption">
+        <h3>{{ currentImage?.titre }}</h3>
+        <p>{{ currentImage?.description }}</p>
+      </div>
+      <div class="nav-area">
+        <button class="nav-btn" (click)="prevImage()" [disabled]="currentIndex === 0">
+          &#8592; Précédente
+        </button>
+        <button class="nav-btn" (click)="nextImage()" [disabled]="currentIndex === images.length - 1">
+          Suivante &#8594;
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
