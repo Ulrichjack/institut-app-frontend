@@ -1,12 +1,19 @@
 <div class="gallery-home">
   <h2>NOS<span class="highlight"> RÉALISATION</span></h2>
+
   <div class="image-grid">
-    <div *ngFor="let img of images; index as i" class="image-item" (click)="openModal(i)">
+    <div
+      *ngFor="let img of images; index as i"
+      class="image-item"
+      (click)="onImageClick($event, i)"
+      [attr.data-animate]="'fade-in-up'"
+    >
       <img [src]="img.url" [alt]="img.titre">
       <div>{{ img.titre }}</div>
       <small>{{ img.description }}</small>
     </div>
   </div>
+
   <app-gallery-modal
     *ngIf="modalOpen"
     [images]="images"
@@ -15,11 +22,15 @@
   ></app-gallery-modal>
 </div>
 
+<!-- Section arguments avec animations douces qui montont -->
+<div class="arguments-section arguments-container">
+  <app-argument-info
+    [arguments]="argumentsList"
+    [columns]="3"
+  ></app-argument-info>
+</div>
 
-<app-argument-info
-  [arguments]="argumentsList"
-  [columns]="3"
-></app-argument-info>
+<!-- Slogan avec animation douce -->
 <div class="beauty-slogan">
-  Prenez votre destin en main. <strong>La beauté, c’est vous !</strong>
+  Prenez votre destin en main. <strong>La beauté, c'est vous !</strong>
 </div>

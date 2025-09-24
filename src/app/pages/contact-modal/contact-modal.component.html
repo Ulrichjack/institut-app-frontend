@@ -1,0 +1,99 @@
+<div class="modal-overlay" (click)="close.emit()">
+  <div class="modal-content responsive-modal" (click)="$event.stopPropagation()">
+    <button class="close-btn" (click)="close.emit()" aria-label="Fermer">×</button>
+    <h2 class="modal-title">Nous contacter</h2>
+
+    <form [formGroup]="contactForm" (ngSubmit)="submit()" autocomplete="off">
+      <div class="form-group">
+        <label for="nom">Nom *</label>
+        <input
+          id="nom"
+          formControlName="nom"
+          required
+          placeholder="Votre nom complet"
+          [class.is-invalid]="getFieldError('nom')"
+        />
+        <div class="invalid-msg" *ngIf="getFieldError('nom')">{{ getFieldError('nom') }}</div>
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email *</label>
+        <input
+          id="email"
+          formControlName="email"
+          required
+          type="email"
+          placeholder="votre.email@exemple.com"
+          [class.is-invalid]="getFieldError('email')"
+        />
+        <div class="invalid-msg" *ngIf="getFieldError('email')">{{ getFieldError('email') }}</div>
+      </div>
+
+      <div class="form-group">
+        <label for="telephone">Téléphone</label>
+        <input
+          id="telephone"
+          formControlName="telephone"
+          placeholder="+237 6 50 34 56 78"
+          [class.is-invalid]="getFieldError('telephone')"
+        />
+        <div class="invalid-msg" *ngIf="getFieldError('telephone')">{{ getFieldError('telephone') }}</div>
+      </div>
+
+      <div class="form-group">
+        <label for="ville">Ville</label>
+        <input
+          id="ville"
+          formControlName="ville"
+          placeholder="Votre ville"
+          [class.is-invalid]="getFieldError('ville')"
+        />
+        <div class="invalid-msg" *ngIf="getFieldError('ville')">{{ getFieldError('ville') }}</div>
+      </div>
+
+      <div class="form-group">
+        <label for="sujet">Sujet</label>
+        <input
+          id="sujet"
+          formControlName="sujet"
+          placeholder="Sujet de votre message"
+          [class.is-invalid]="getFieldError('sujet')"
+        />
+        <div class="invalid-msg" *ngIf="getFieldError('sujet')">{{ getFieldError('sujet') }}</div>
+      </div>
+
+      <div class="form-group">
+        <label for="message">Message *</label>
+        <textarea
+          id="message"
+          formControlName="message"
+          required
+          rows="4"
+          placeholder="Décrivez votre demande en détail..."
+          [class.is-invalid]="getFieldError('message')"
+        ></textarea>
+        <div class="invalid-msg" *ngIf="getFieldError('message')">{{ getFieldError('message') }}</div>
+      </div>
+
+      <button
+        type="submit"
+        [disabled]="contactForm.invalid || isLoading"
+        class="btn btn-primary w-100"
+      >
+        {{ isLoading ? 'Envoi en cours...' : 'Envoyer mon message' }}
+      </button>
+    </form>
+
+    <div *ngIf="isLoading" class="modal-loader">
+      Traitement de votre demande
+    </div>
+
+    <div *ngIf="successMessage" class="modal-success">
+      {{ successMessage }}
+    </div>
+
+    <div *ngIf="errorMessage" class="modal-error">
+      {{ errorMessage }}
+    </div>
+  </div>
+</div>

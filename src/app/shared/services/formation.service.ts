@@ -31,14 +31,28 @@ export class FormationService {
       .set('sortBy', sortBy)
       .set('sortOrder', sortOrder);
 
-    // Note : Votre backend renvoie une `Page<FormationListDto>` qui est elle-même l'objet `data`
-    // dans la réponse `ApiResponse`. La structure `ApiResponse<List<FormationListDto>>` est la plus proche
-    // de ce que vous avez, car la page contient le contenu (`List`).
     return this.http.get<ApiResponse<FormationListDto[]>>(`${this.apiBaseUrl}/formations`, { params });
   }
 
    getFormationDetails(slug: string): Observable<FormationDetailDto> {
     return this.http.get<FormationDetailDto>(`${this.apiBaseUrl}/formations/details/${slug}`);
   }
+
+searchFormations(q: string, page: number = 0, size: number = 12): Observable<ApiResponse<any>> {
+  let params = new HttpParams()
+    .set('q', q || '')
+    .set('page', page.toString())
+    .set('size', size.toString());
+
+  // CORRECTION : Utiliser l'URL complète avec apiBaseUrl
+  return this.http.get<ApiResponse<any>>(`${this.apiBaseUrl}/formations/search`, { params });
+}
+
+getFormationDetailBySlug(slug: string) {
+  return this.http.get<ApiResponse<any>>(`${this.apiBaseUrl}/formations/slug/${slug}`);
+}
+
+
+
 
 }

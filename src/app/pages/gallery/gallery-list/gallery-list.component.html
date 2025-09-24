@@ -1,15 +1,24 @@
 <div class="gallery-list">
-  <h2>Galerie</h2>
+  <h2 class="gallery-title">Galerie Photos & Événements</h2>
   <div class="image-grid">
-    <div *ngFor="let img of images" class="image-item">
-      <img [src]="img.url" [alt]="img.titre">
-      <div>{{ img.titre }}</div>
-      <small>{{ img.description }}</small>
+    <div *ngFor="let img of images; let i = index" class="image-item" [style.animation-delay]="(i * 90) + 'ms'">
+      <div class="img-container">
+        <img [src]="img.url" [alt]="img.titre" class="gallery-img" />
+        <div class="event-badge" *ngIf="img.isEvent">Événement</div>
+      </div>
+      <div class="img-info">
+        <h4 class="img-title">{{ img.titre }}</h4>
+        <p class="img-description">{{ img.description }}</p>
+      </div>
     </div>
   </div>
   <div class="pagination">
-    <button (click)="prevPage()" [disabled]="page === 0">Page précédente</button>
-    <span>Page {{ page + 1 }} sur {{ totalPages }}</span>
-    <button (click)="nextPage()" [disabled]="page >= totalPages - 1">Page suivante</button>
+    <button (click)="prevPage()" [disabled]="page === 0" class="page-btn">
+      <i class="fas fa-chevron-left"></i> Précédent
+    </button>
+    <span>Page <strong>{{ page + 1 }}</strong> sur <strong>{{ totalPages }}</strong></span>
+    <button (click)="nextPage()" [disabled]="page >= totalPages - 1" class="page-btn">
+      Suivant <i class="fas fa-chevron-right"></i>
+    </button>
   </div>
 </div>

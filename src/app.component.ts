@@ -1,6 +1,6 @@
 import { SwiperModule } from './../node_modules/swiper/types/shared.d';
 import { Component, OnInit, AfterViewInit } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { HeaderComponent } from "./app/shared/components/header/header.component";
 import { CommonModule } from '@angular/common';
 import { FooterComponent } from "./app/shared/components/footer/footer.component";
@@ -15,6 +15,19 @@ import { HomeFormationsComponent } from "./app/pages/home-formations/home-format
 })
 export class AppComponent implements OnInit, AfterViewInit {
   title = 'institue';
+   isModalOpen = false;
+
+constructor(private router: Router) {
+    this.router.events.subscribe(event => {
+      if (event instanceof NavigationEnd) {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    });
+  }
+
+  openModal() { this.isModalOpen = true; }
+  closeModal() { this.isModalOpen = false; }
+
 
   ngOnInit(): void {
     // Initialization code

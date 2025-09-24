@@ -1,7 +1,9 @@
+import { CommonModule } from '@angular/common';
 import { Component, ElementRef, ViewChild, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 
 @Component({
   selector: 'app-stats-section',
+  imports:[CommonModule],
   templateUrl: './stats-section.component.html',
   styleUrls: ['./stats-section.component.scss']
 })
@@ -21,7 +23,7 @@ export class StatsSectionComponent implements OnInit, OnDestroy, AfterViewInit {
 
   // Données des statistiques
   private stats = [
-    { element: 'stat1', target: 20, duration: 2000, suffix: '+' },
+    { element: 'stat1', target: 5, duration: 3000, suffix: '+' },
     { element: 'stat2', target: 98, duration: 2000, suffix: '%' },
     { element: 'stat3', target: 1500, duration: 2500, suffix: '+' },
     { element: 'stat4', target: 95, duration: 2000, suffix: '%' }

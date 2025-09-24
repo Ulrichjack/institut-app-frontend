@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 
 export interface GalleryImage {
+isEvent: any;
   id: number;
   titre: string;
   description: string;

@@ -1,1 +1,211 @@
-<p>about works!</p>
+<section class="about-section">
+  <!-- Header avec animation de typing -->
+  <div class="about-header">
+    <h1 class="about-title typing-animation">
+      À propos de l'Institut Beauty's Empire (IBE)
+    </h1>
+    <p class="about-subtitle fade-in-up">
+      L'excellence et l'innovation dans la formation beauté à Yaoundé
+    </p>
+  </div>
+
+  <div class="about-grid">
+    <!-- Bloc principal avec parallax subtle -->
+    <div class="about-main">
+      <section class="about-block floating-card">
+        <h2 class="about-block-title">Notre Histoire</h2>
+        <p>Situé au cœur de Yaoundé, l'Institut Beauty's Empire (IBE) s'est imposé depuis plus de 5 ans comme une référence en matière de formation professionnelle dans les métiers de la beauté et de l'esthétique au Cameroun. Dirigé par <strong>Pavel Lutherking</strong>, notre institut incarne l'excellence et l'innovation dans l'enseignement des arts de la beauté.</p>
+      </section>
+
+      <section class="about-block floating-card">
+        <h2 class="about-block-title">Notre Mission</h2>
+        <p>L'Institut Beauty's Empire a pour mission de <strong>former une nouvelle génération de professionnels qualifiés</strong> dans les métiers de la beauté, en offrant des formations de qualité supérieure qui allient théorie approfondie et pratique intensive. Nous nous engageons à accompagner chaque apprenant dans sa transformation professionnelle et personnelle.</p>
+      </section>
+    </div>
+
+    <!-- Statistiques animées -->
+    <aside class="about-aside">
+      <div class="about-stats">
+        <div class="about-stat pulse-card" #stat1>
+          <span class="animated-counter stat-number"
+                [attr.data-target]="5"
+                [attr.data-suffix]="'+'">
+            0+
+          </span>
+          <span class="stat-label">Années d'expérience</span>
+        </div>
+        <div class="about-stat pulse-card" #stat2>
+          <span class="animated-counter stat-number"
+                [attr.data-target]="1500"
+                [attr.data-suffix]="'+'">
+            0+
+          </span>
+          <span class="stat-label">Élèves formés</span>
+        </div>
+        <div class="about-stat pulse-card" #stat3>
+          <span class="animated-counter stat-number"
+                [attr.data-target]="95"
+                [attr.data-suffix]="'%'">
+            0%
+          </span>
+          <span class="stat-label">Taux de réussite</span>
+        </div>
+        <div class="about-stat pulse-card" #stat4>
+          <span class="animated-counter stat-number"
+                [attr.data-target]="1851"
+                [attr.data-suffix]="'+'">
+            0+
+          </span>
+          <span class="stat-label">Membres Facebook</span>
+        </div>
+      </div>
+
+      <div class="about-cta glow-effect">
+        <p class="about-cta-text">
+          <strong>Rejoignez Beauty's Empire</strong><br/>
+          Transformez votre passion en carrière professionnelle !
+        </p>
+        <a class="about-cta-btn" href="#contact">
+          <span>Contactez-nous</span>
+          <div class="button-ripple"></div>
+        </a>
+      </div>
+    </aside>
+  </div>
+
+  <!-- Valeurs avec animations en cascade -->
+  <section class="about-values">
+    <h2 class="about-block-title">Nos valeurs</h2>
+    <div class="values-list">
+      <div class="value-item"
+           #valueCard1
+           [style.animation-delay]="'100ms'">
+        <h3>
+          <span class="value-icon">🎓</span>
+          Excellence pédagogique
+        </h3>
+        <p>Une équipe hautement qualifiée transmet son savoir avec passion.</p>
+      </div>
+      <div class="value-item"
+           #valueCard2
+           [style.animation-delay]="'200ms'">
+        <h3>
+          <span class="value-icon">🤝</span>
+          Accompagnement personnalisé
+        </h3>
+        <p>2 mois de suivi post-formation et aide à la création d'entreprise.</p>
+      </div>
+      <div class="value-item"
+           #valueCard3
+           [style.animation-delay]="'300ms'">
+        <h3>
+          <span class="value-icon">💡</span>
+          Innovation constante
+        </h3>
+        <p>Programmes mis à jour selon les tendances et techniques du secteur.</p>
+      </div>
+      <div class="value-item"
+           #valueCard4
+           [style.animation-delay]="'400ms'">
+        <h3>
+          <span class="value-icon">🌍</span>
+          Accessibilité
+        </h3>
+        <p>Formations abordables et paiement flexible pour tous.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Domaines d'expertise -->
+  <section class="about-expertise fade-in-section">
+    <h2 class="about-block-title">Nos domaines d'expertise</h2>
+    <div class="expertise-grid">
+      <div class="expertise-item">
+        <strong>Esthétique Professionnelle</strong> — Soins du visage, du corps, bien-être
+      </div>
+      <div class="expertise-item">
+        <strong>Maquillage Professionnel</strong> — Du maquillage jour au maquillage artistique
+      </div>
+      <div class="expertise-item">
+        <strong>Prothésie Ongulaire</strong> — Nail art et extension d'ongles
+      </div>
+      <div class="expertise-item">
+        <strong>Coiffure Professionnelle</strong> — Coupe, coiffage, traitements modernes
+      </div>
+      <div class="expertise-item">
+        <strong>Cosmétique</strong> — Fabrication de produits naturels
+      </div>
+      <div class="expertise-item">
+        <strong>Extension de Cils & Microblading</strong> — Beauté du regard
+      </div>
+      <div class="expertise-item">
+        <strong>Décoration Événementielle</strong> — Organisation et décoration pro
+      </div>
+    </div>
+  </section>
+
+ <div class="about-grid-2x2">
+  <!-- Certifications -->
+  <section class="about-certifications card-anim" #gridCard1 [style.animation-delay]="'100ms'">
+    <h2 class="about-block-title">Nos certifications</h2>
+    <ul class="certification-list">
+      <li>Certificats de Fin de Formation reconnus</li>
+      <li>Diplômes DQP, CQP, AQP</li>
+    </ul>
+  </section>
+
+  <!-- Avantages -->
+  <section class="about-advantages card-anim" #gridCard2 [style.animation-delay]="'200ms'">
+    <h2 class="about-block-title">Nos avantages uniques</h2>
+    <ul class="advantages-list">
+      <li>Formation théorique & pratique intensive, matériel pro inclus</li>
+      <li>Wifi gratuit, stages garantis, placement en entreprise facilité</li>
+      <li>2 mois de suivi post-formation, accompagnement à la création d'entreprise</li>
+      <li>Permis B à tarif préférentiel, formation gratuite aux achats en ligne Chine</li>
+      <li>Formations complémentaires en développement personnel</li>
+      <li>Vente de matériel professionnel à prix de gros</li>
+    </ul>
+  </section>
+
+  <!-- Engagement qualité -->
+  <section class="about-quality card-anim" #gridCard3 [style.animation-delay]="'300ms'">
+    <h2 class="about-block-title">Notre engagement qualité</h2>
+    <ul class="quality-list">
+      <li>Formateurs expérimentés et certifiés</li>
+      <li>Équipements modernes et matériel pro</li>
+      <li>Suivi personnalisé, mise à jour constante</li>
+      <li>Respect strict des normes d'hygiène et sécurité</li>
+    </ul>
+  </section>
+
+  <!-- Horaires -->
+  <section class="about-schedule card-anim" #gridCard4 [style.animation-delay]="'400ms'">
+    <h2 class="about-block-title">Horaires & flexibilité</h2>
+    <ul class="schedule-list">
+      <li><strong>Cours du jour</strong> : 8h00 à 13h30</li>
+      <li><strong>Cours du soir</strong> : 14h00 à 18h30</li>
+      <li>Du lundi au vendredi, possibilité week-end</li>
+    </ul>
+  </section>
+</div>
+
+  <!-- Vision avec animation de parallax -->
+  <section class="about-vision parallax-section">
+    <h2 class="about-block-title">Notre vision</h2>
+    <p class="vision-text">
+      Devenir <strong>l'institut de référence en formation beauté</strong> en Afrique Centrale, en formant des professionnels compétents, créatifs et entrepreneurs, capables d'évoluer et de réussir.
+    </p>
+  </section>
+
+  <!-- CTA final avec effet de hover élaboré -->
+  <div class="about-cta about-cta-bottom">
+    <p>
+      <strong>Rejoignez l'Institut Beauty's Empire</strong> et transformez votre passion pour la beauté en une carrière professionnelle épanouissante.<br/>
+      <span class="about-cta-bottom-strong">Contactez-nous dès aujourd'hui pour découvrir nos formations !</span>
+    </p>
+    <a class="about-cta-btn-final" href="formations">
+      <span>Découvrir nos formations</span>
+      <div class="btn-glow"></div>
+    </a>
+  </div>
+</section>

@@ -6,7 +6,7 @@ import { CommonModule } from '@angular/common';
   selector: 'app-gallery-list',
   imports:[CommonModule],
   templateUrl: './gallery-list.component.html',
-  styleUrl:'./gallery-list.component.css'
+  styleUrls: ['./gallery-list.component.scss']
 })
 export class GalleryListComponent implements OnInit {
   images: GalleryImage[] = [];

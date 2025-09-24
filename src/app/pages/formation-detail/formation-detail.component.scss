@@ -1,0 +1,342 @@
+.formation-detail-section {
+  background: #fff;
+  padding: 3rem 0;
+
+  .detail-photo-wrap {
+    text-align: center;
+
+    img {
+      max-width: 100%;
+      border-radius: 1.1rem;
+      box-shadow: 0 4px 24px rgba(136,76,210,0.11);
+    }
+
+    .small-gallery-img {
+      height: 100px;
+      object-fit: cover;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+
+      &:hover {
+        transform: scale(1.05);
+      }
+    }
+
+    .video-presentation video {
+      border-radius: 1.1rem;
+      box-shadow: 0 4px 24px rgba(136,76,210,0.11);
+    }
+  }
+
+  .detail-info-wrap {
+    padding: 1.5rem 2rem;
+
+    .formation-title {
+      font-size: 2.2rem;
+      font-weight: bold;
+      color: #884cd2;
+      margin-bottom: 1rem;
+    }
+
+    .formation-meta {
+      font-size: 1.02rem;
+      color: #5c5c5c;
+
+      .badge {
+        font-size: 0.93rem;
+        margin-bottom: 0.5rem;
+      }
+
+      i {
+        color: #ff4f9d;
+      }
+    }
+
+    .social-proof {
+      .badge {
+        font-size: 1rem;
+        padding: 0.5rem 1rem;
+        animation: pulse 2s infinite;
+      }
+    }
+
+    .formation-description {
+      margin-top: 1.2rem;
+      font-size: 1.13rem;
+      color: #212121;
+      line-height: 1.6;
+    }
+
+    .prix-section {
+      background: #f8f9fa;
+      padding: 1.5rem;
+      border-radius: 0.8rem;
+      border-left: 4px solid #884cd2;
+
+      .prix-inscription, .prix-formation {
+        margin-bottom: 0.5rem;
+
+        &:last-child {
+          margin-bottom: 0;
+        }
+      }
+
+      .price {
+        font-size: 1.3rem;
+        font-weight: bold;
+        color: #884cd2;
+      }
+
+      .old-price {
+        text-decoration: line-through;
+        color: #999;
+        margin-right: 0.5rem;
+      }
+
+      .new-price {
+        font-size: 1.3rem;
+        font-weight: bold;
+        color: #28a745;
+      }
+    }
+
+    .places-info {
+      .progress {
+        height: 8px;
+
+        .progress-bar {
+          transition: width 0.8s ease;
+        }
+      }
+    }
+
+    .detail-actions {
+      margin-top: 2.5rem;
+
+      .btn {
+        font-size: 1.1rem;
+        padding: 0.8rem 2rem;
+
+        &:disabled {
+          background-color: #6c757d;
+          border-color: #6c757d;
+        }
+      }
+    }
+  }
+
+  // Onglets d'informations détaillées
+  .nav-tabs {
+    border-bottom: 2px solid #884cd2;
+
+    .nav-link {
+      color: #5c5c5c;
+      font-weight: 600;
+      border: none;
+      border-bottom: 3px solid transparent;
+
+      &.active {
+        color: #884cd2;
+        background: none;
+        border-bottom-color: #884cd2;
+      }
+
+      &:hover {
+        color: #884cd2;
+        border-color: transparent;
+      }
+    }
+  }
+
+  .tab-content-wrapper {
+    padding: 2rem;
+    background: #f8f9fa;
+    border-radius: 0.8rem;
+    margin-top: 1rem;
+
+    h5 {
+      color: #884cd2;
+      margin-bottom: 1rem;
+
+      i {
+        margin-right: 0.5rem;
+        color: #ff4f9d;
+      }
+    }
+
+    p {
+      color: #212121;
+      line-height: 1.6;
+      margin-bottom: 0.5rem;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+  }
+
+  .certification-info {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+
+    .cert-icon {
+      font-size: 3rem;
+      color: #ffd700;
+    }
+
+    h6 {
+      color: #884cd2;
+      font-weight: bold;
+      margin-bottom: 0.5rem;
+    }
+  }
+
+  // Section promotion
+  .promo-section {
+    .alert {
+      border-left: 4px solid #ffc107;
+
+      h5 {
+        color: #856404;
+
+        i {
+          color: #ff4f9d;
+          margin-right: 0.5rem;
+        }
+      }
+    }
+  }
+
+  // Autres formations
+  .other-formations-section {
+    margin-top: 3rem;
+
+    h4 {
+      color: #884cd2;
+      font-weight: bold;
+    }
+
+    .other-formation-card {
+      border-radius: 1rem;
+      box-shadow: 0 2px 12px rgba(199,133,225,0.09);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+      &:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 25px rgba(199,133,225,0.2);
+      }
+
+      img {
+        border-radius: 1rem 1rem 0 0;
+        height: 200px;
+        object-fit: cover;
+      }
+
+      .card-body {
+        padding: 1rem;
+      }
+
+      .card-title {
+        font-size: 1.09rem;
+        font-weight: 600;
+        color: #884cd2;
+      }
+
+      .btn-link {
+        color: #884cd2;
+        font-weight: 700;
+        text-decoration: none;
+
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+
+      .price-small {
+        font-weight: bold;
+        color: #28a745;
+      }
+    }
+  }
+}
+
+// Animations
+@keyframes pulse {
+  0% { opacity: 1; }
+  50% { opacity: 0.7; }
+  100% { opacity: 1; }
+}
+
+// États de chargement et d'erreur
+.loading-container, .error-container {
+  text-align: center;
+  padding: 2rem;
+
+  .loading-spinner {
+    width: 2rem;
+    height: 2rem;
+    border: 4px solid #e9dff5;
+    border-left-color: #884cd2;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    display: inline-block;
+    margin-bottom: 1rem;
+  }
+
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+
+  .status-icon {
+    font-size: 2.2rem;
+    margin-bottom: 0.8rem;
+  }
+}
+
+// Responsive
+@media (max-width: 768px) {
+  .formation-detail-section {
+    .detail-info-wrap {
+      padding: 1rem;
+
+      .formation-title {
+        font-size: 1.8rem;
+      }
+
+      .detail-actions {
+        .btn {
+          display: block;
+          width: 100%;
+          margin-bottom: 0.5rem;
+        }
+      }
+    }
+
+    .tab-content-wrapper {
+      padding: 1rem;
+    }
+  }
+}
+.btn-retour {
+  background: #f8f9fa;
+  color: #884cd2;
+  border: none;
+  padding: 0.6rem 1.1rem;
+  border-radius: 2rem;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-bottom: 1.2rem;
+  box-shadow: 0 2px 8px rgba(136,76,210,0.07);
+  cursor: pointer;
+  transition: background 0.19s;
+  &:hover {
+    background: #e9dff5;
+  }
+  i {
+    font-size: 1.12rem;
+  }
+}

@@ -1,15 +1,15 @@
 <div class="testimonial-carousel">
-  <h2>TÉMOI<span class="highlight"> GNAGES</span></h2>
+  <h2>TÉMOIG<span class="highlight">NAGES</span></h2>
 
   <swiper-container
     slides-per-view="1"
-            space-between="30"
-            loop="false"
-            autoplay="true"
-            pagination="true"
-            pagination-clickable="true"
-            navigation="true"
-            centered-slides="false"
+    space-between="30"
+    loop="false"
+    autoplay="true"
+    pagination="true"
+    pagination-clickable="true"
+    navigation="true"
+    centered-slides="false"
     breakpoints='{
       "640": {
         "slidesPerView": 1,
@@ -25,9 +25,11 @@
       }
     }'
   >
-    @for (testimonial of testimonials; track testimonial.name) {
+    @for (testimonial of testimonials; track testimonial.name; let i = $index) {
       <swiper-slide>
-        <div class="testimonial-card">
+        <div class="testimonial-card"
+             (mouseenter)="onCardHover($event, true)"
+             (mouseleave)="onCardHover($event, false)">
           <!-- Section photo en haut -->
           @if (testimonial.photo) {
             <div class="testimonial-photo-section">

@@ -1,6 +1,6 @@
 import { Component, ElementRef, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { CarouselComponent } from "../carousel/carousel.component";
-import {  FormationsComponent } from "../../formations/formations.component";
+import {  FormationsComponent } from "../formations/formations.component";
 import { FormationCreationComponent } from "../../admin/formation-creation/formation-creation.component";
 import { HomeFormationsComponent } from "../home-formations/home-formations.component";
 import { GalleryHomeComponent } from "../gallery/gallery-home/gallery-home.component";

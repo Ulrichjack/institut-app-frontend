@@ -1,0 +1,266 @@
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: fadeIn 0.3s ease-out;
+}
+
+.modal-content {
+  position: relative;
+  background: white;
+  border-radius: 16px;
+  padding: 2.5rem;
+  min-width: 320px;
+  max-width: 480px;
+  width: 90vw;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 20px 60px rgba(136, 76, 210, 0.15),
+              0 8px 32px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(136, 76, 210, 0.1);
+  animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+
+  @media (max-width: 600px) {
+    min-width: 90vw;
+    max-width: 95vw;
+    padding: 2rem 1.5rem;
+    border-radius: 12px;
+    max-height: 85vh;
+  }
+}
+
+.close-btn {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: rgba(136, 76, 210, 0.1);
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3rem;
+  color: #884cd2;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: rgba(136, 76, 210, 0.15);
+    transform: scale(1.05);
+  }
+
+  &:active {
+    transform: scale(0.95);
+  }
+}
+
+.modal-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 2rem;
+  margin-top: 0.5rem;
+  color: #2d3748;
+  text-align: center;
+  line-height: 1.3;
+  position: relative;
+  padding-right: 2rem; // Pour éviter le chevauchement avec le bouton fermer
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 3px;
+    background: linear-gradient(90deg, #ff4f9d 0%, #884cd2 100%);
+    border-radius: 2px;
+  }
+}
+
+.form-group {
+  margin-bottom: 1.4rem;
+
+  label {
+    display: block;
+    font-weight: 600;
+    color: #4a5568;
+    margin-bottom: 0.6rem;
+    font-size: 0.9rem;
+  }
+}
+
+input, textarea {
+  width: 100%;
+  padding: 0.875rem 1.2rem;
+  border-radius: 10px;
+  border: 1.5px solid #e2e8f0;
+  font-size: 1rem;
+  font-family: inherit;
+  transition: all 0.2s ease;
+  background: #fafbfc;
+
+  &:focus {
+    outline: none;
+    border-color: #884cd2;
+    background: white;
+    box-shadow: 0 0 0 3px rgba(136, 76, 210, 0.1);
+    transform: translateY(-1px);
+  }
+
+  &::placeholder {
+    color: #a0aec0;
+  }
+}
+
+textarea {
+  resize: vertical;
+  min-height: 100px;
+  font-family: inherit;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #ff4f9d 0%, #884cd2 100%);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  padding: 1rem 2rem;
+  font-size: 1.05rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s ease;
+  }
+
+  &:hover::before {
+    left: 100%;
+  }
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 30px rgba(136, 76, 210, 0.4);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+
+    &:hover {
+      transform: none;
+      box-shadow: none;
+    }
+  }
+}
+
+.modal-loader {
+  text-align: center;
+  margin-top: 2rem;
+  padding: 1.5rem;
+  color: #884cd2;
+  font-weight: 500;
+  font-size: 1.1rem;
+
+  &::after {
+    content: '';
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    border: 3px solid #884cd2;
+    border-radius: 50%;
+    border-top-color: transparent;
+    animation: spin 1s linear infinite;
+    margin-left: 0.7rem;
+  }
+}
+
+.modal-success {
+  background: linear-gradient(135deg, #48bb78, #38a169);
+  color: white;
+  padding: 1.25rem;
+  border-radius: 12px;
+  margin-top: 2rem;
+  text-align: center;
+  font-weight: 500;
+  font-size: 1.05rem;
+  box-shadow: 0 6px 20px rgba(72, 187, 120, 0.3);
+
+  &::before {
+    content: '🎉';
+    margin-right: 0.7rem;
+    font-size: 1.2rem;
+  }
+}
+
+.modal-error {
+  background: linear-gradient(135deg, #f56565, #e53e3e);
+  color: white;
+  padding: 1.25rem;
+  border-radius: 12px;
+  margin-top: 2rem;
+  text-align: center;
+  font-weight: 500;
+  font-size: 1.05rem;
+  box-shadow: 0 6px 20px rgba(245, 101, 101, 0.3);
+
+  &::before {
+    content: '⚠️';
+    margin-right: 0.7rem;
+    font-size: 1.2rem;
+  }
+}
+
+// Animations
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}

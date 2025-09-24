@@ -1,3 +1,50 @@
+$beauty-primary: #c785e1;
+$beauty-secondary: #fe87a2;
+$beauty-dark: #2a2a2a;
+
+h2 {
+  text-align: center;
+  font-weight: 700;
+  font-size: 2.5rem;
+  margin-bottom: 3rem;
+  color: $beauty-dark;
+  font-family: 'Playfair Display', serif;
+
+  // Animation d'entrée pour le titre
+  opacity: 0;
+  transform: translateY(-30px);
+  transition: all 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+
+  &.animate-in {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.highlight {
+    color: $beauty-primary;
+    position: relative;
+
+    // Effet de soulignement animé
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: -5px;
+      left: 0;
+      width: 0;
+      height: 3px;
+      background: linear-gradient(90deg, $beauty-primary, #fe87a2);
+      border-radius: 2px;
+      transition: width 1.2s ease-out 0.5s;
+    }
+
+    // Quand le titre est animé, on anime aussi le soulignement
+    h2.animate-in & {
+      &::after {
+        width: 100%;
+      }
+    }
+  }
+
 .localisation-section {
   display: flex;
   gap: 2rem;
@@ -6,18 +53,43 @@
   max-width: 1100px;
   margin: 2.5rem auto;
   flex-wrap: wrap;
-}
- h2 {
-    text-align: center;
-    font-weight: 700;
-    margin-bottom: 2rem;
-    color: #2d3748;
-  }
 
+  // Animation d'entrée pour toute la section
+  opacity: 0;
+  transform: translateY(60px);
+  transition: all 1.4s cubic-bezier(0.16, 1, 0.3, 1);
+
+  &.animate-in {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
 
 .localisation-map {
   flex: 1 1 400px;
   max-width: 480px;
+
+  // Animation spécifique pour la carte
+  opacity: 0;
+  transform: translateX(-80px) scale(0.9);
+  transition: all 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+
+  &.animate-in {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+
+  iframe {
+    border: 0;
+    border-radius: 0.7rem;
+    box-shadow: 0 8px 32px rgba(199, 133, 225, 0.15);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+
+    &:hover {
+      box-shadow: 0 12px 40px rgba(199, 133, 225, 0.25);
+      transform: translateY(-4px);
+    }
+  }
 }
 
 .localisation-info {
@@ -30,6 +102,41 @@
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
+  position: relative;
+  overflow: hidden;
+
+  // Animation spécifique pour les infos
+  opacity: 0;
+  transform: translateX(80px) scale(0.9);
+  transition: all 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.2s;
+
+  &.animate-in {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+
+  // Effet de brillance au survol
+  &::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
+    transform: rotate(45deg);
+    transition: all 0.6s;
+    opacity: 0;
+  }
+
+  &:hover {
+    box-shadow: 0 12px 40px rgba(199, 133, 225, 0.25);
+    transform: translateX(0) scale(1.02) translateY(-4px);
+
+    &::before {
+      animation: shine 0.6s ease-in-out;
+    }
+  }
 }
 
 .localisation-title {
@@ -37,6 +144,16 @@
   font-weight: bold;
   color: #a334b2;
   margin-bottom: 1.3rem;
+
+  // Animation pour le titre de la section
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.4s;
+
+  .localisation-info.animate-in & {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .localisation-details {
@@ -45,51 +162,146 @@
   margin-bottom: 1.2rem;
   list-style: none;
   padding: 0;
+
+  // Animation pour les détails
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 1s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.6s;
+
+  .localisation-info.animate-in & {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  li {
+    margin-bottom: 1rem;
+    padding-left: 1rem;
+    position: relative;
+
+    &::before {
+      content: '📍';
+      position: absolute;
+      left: 0;
+      top: 0;
+      font-size: 1rem;
+    }
+
+    strong {
+      color: $beauty-primary;
+      font-weight: 600;
+    }
+
+    em {
+      color: #666;
+      font-style: italic;
+      font-size: 0.95rem;
+    }
+  }
 }
 
 .image-ref {
   font-size: 0.95em;
   color: #a334b2;
+
+  a {
+    color: inherit;
+    text-decoration: none;
+    transition: color 0.3s ease;
+
+    &:hover {
+      color: $beauty-secondary;
+    }
+  }
 }
 
 .localisation-contact {
-  background: #f6f2fa;
+  background: linear-gradient(135deg, #f6f2fa 0%, #faf6fb 100%);
   border-radius: 0.7rem;
-  padding: 1rem 1.2rem;
+  padding: 1.5rem 1.2rem;
   margin-top: 1.2rem;
-}
+  border: 1px solid rgba(199, 133, 225, 0.1);
 
-.localisation-contact h3 {
-  margin-top: 0;
-  color: #7a2fa6;
-  font-size: 1.2rem;
-}
+  // Animation pour la section contact
+  opacity: 0;
+  transform: translateY(40px) scale(0.95);
+  transition: all 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.8s;
 
-.localisation-contact p {
-  margin: 0.4rem 0;
-  font-size: 1rem;
+  .localisation-info.animate-in & {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+
+  h3 {
+    margin-top: 0;
+    color: #7a2fa6;
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+  }
+
+  p {
+    margin: 0.6rem 0;
+    font-size: 1rem;
+    line-height: 1.6;
+
+    a {
+      color: $beauty-primary;
+      text-decoration: none;
+      font-weight: 600;
+      transition: color 0.3s ease;
+
+      &:hover {
+        color: $beauty-secondary;
+      }
+    }
+  }
 }
 
 .icon-location,
 .icon-phone {
   margin-right: 0.5em;
   color: #a334b2;
+  font-size: 1.1rem;
 }
 
 .contact-btn {
-  background: #a334b2;
+  background: linear-gradient(135deg, #a334b2, $beauty-primary);
   color: #fff;
   border: none;
   border-radius: 2rem;
-  padding: 0.7rem 2rem;
+  padding: 0.8rem 2rem;
   font-size: 1.1rem;
+  font-weight: 600;
   margin-top: 1rem;
   cursor: pointer;
-  box-shadow: 0 2px 8px rgba(130,122,229,0.10);
-  transition: background 0.2s;
-}
-.contact-btn:hover {
-  background: #7a2fa6;
+  box-shadow: 0 4px 16px rgba(163, 52, 178, 0.3);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    transition: left 0.5s;
+  }
+
+  &:hover {
+    background: linear-gradient(135deg, #7a2fa6, #a334b2);
+    transform: translateY(-2px) scale(1.05);
+    box-shadow: 0 8px 24px rgba(163, 52, 178, 0.4);
+
+    &::before {
+      left: 100%;
+    }
+  }
+
+  &:active {
+    transform: translateY(-1px) scale(1.02);
+  }
 }
 
 .localisation-images {
@@ -97,27 +309,123 @@
   gap: 0.7rem;
   margin-top: 1.2rem;
   flex-wrap: wrap;
+
+  // Animation pour les images (si présentes)
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) 1s;
+
+  .localisation-info.animate-in & {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  img {
+    max-width: 110px;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 16px rgba(199, 133, 225, 0.15);
+    border: 2px solid #f2e6fa;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+    &:hover {
+      transform: scale(1.1) translateY(-4px);
+      box-shadow: 0 8px 24px rgba(199, 133, 225, 0.25);
+    }
+  }
 }
 
-.localisation-images img {
-  max-width: 110px;
-  border-radius: 0.5rem;
-  box-shadow: 0 2px 8px rgba(130,122,229,0.10);
-  border: 2px solid #f2e6fa;
+// Animations keyframes
+@keyframes shine {
+  0% {
+    opacity: 0;
+    transform: translateX(-100%) translateY(-100%) rotate(45deg);
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(100%) translateY(100%) rotate(45deg);
+  }
 }
 
-/* Responsive */
+// Animation de pulse pour les icônes
+@keyframes iconPulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+}
+
+.icon-location,
+.icon-phone {
+  animation: iconPulse 3s ease-in-out infinite;
+}
+
+/* Responsive amélioré */
 @media (max-width: 900px) {
   .localisation-section {
     flex-direction: column;
-    gap: 1.2rem;
+    gap: 1.5rem;
     align-items: center;
   }
+
+  .localisation-map,
   .localisation-info {
-    max-width: 99vw;
-    padding: 1.2rem 0.7rem;
+    // Sur mobile, les animations viennent du bas
+    &.animate-in {
+      transform: translateY(0) scale(1);
+    }
   }
+
   .localisation-map {
-    max-width: 99vw;
+    max-width: 95vw;
+
+    // Animation mobile spécifique
+    transform: translateY(40px) scale(0.95);
+
+    iframe {
+      height: 300px;
+    }
+  }
+
+  .localisation-info {
+    max-width: 95vw;
+    padding: 1.5rem 1rem;
+
+    // Animation mobile spécifique
+    transform: translateY(50px) scale(0.95);
+    transition-delay: 0.1s;
+  }
+
+  h2 {
+    font-size: 2rem;
+    margin-bottom: 2rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .localisation-section {
+    margin: 1.5rem auto;
+  }
+
+  h2 {
+    font-size: 1.8rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .localisation-info {
+    padding: 1rem 0.8rem;
+  }
+
+  .localisation-title {
+    font-size: 1.4rem;
+  }
+
+  .contact-btn {
+    padding: 0.7rem 1.5rem;
+    font-size: 1rem;
   }
 }

@@ -1,0 +1,222 @@
+<section class="formation-detail-section" *ngIf="formation">
+  <div class="container">
+    <!-- Bouton retour ici, juste avant le reste du contenu -->
+    <button class="btn-retour" (click)="retour()">
+      <i class="fas fa-arrow-left"></i> Retour aux formations
+    </button>
+    <div class="row">
+      <!-- Image à gauche -->
+      <div class="col-lg-5 col-md-6 detail-photo-wrap">
+        <img [src]="formation.photoPrincipale" [alt]="formation.nom" class="img-fluid rounded" />
+
+        <!-- Galerie photos supplémentaires -->
+        <div class="photos-galerie mt-3" *ngIf="formation.photosGalerie && formation.photosGalerie.length > 0">
+          <div class="row g-2">
+            <div class="col-6" *ngFor="let photo of formation.photosGalerie">
+              <img [src]="photo" [alt]="formation.nom" class="img-fluid rounded small-gallery-img" />
+            </div>
+          </div>
+        </div>
+
+        <!-- Vidéo de présentation -->
+        <div class="video-presentation mt-3" *ngIf="formation.videoPresentation">
+          <video [src]="formation.videoPresentation" controls class="img-fluid rounded">
+            Votre navigateur ne supporte pas la lecture vidéo.
+          </video>
+        </div>
+      </div>
+
+      <!-- Infos à droite -->
+      <div class="col-lg-7 col-md-6 detail-info-wrap">
+        <h1 class="formation-title">{{ formation.nom }}</h1>
+
+        <!-- Badges et méta informations -->
+        <div class="formation-meta mb-3">
+          <span class="badge bg-primary">{{ formation.categorie }}</span>
+          <span class="badge bg-success ms-2" *ngIf="formation.enPromotion">
+            PROMO -{{ formation.pourcentageReduction }}%
+          </span>
+          <span class="ms-3"><i class="fas fa-clock"></i> {{ formation.duree }}</span>
+          <span class="ms-3"><i class="fas fa-users"></i> {{ formation.nombrePlaces }} places</span>
+          <span class="ms-3"><i class="fas fa-calendar"></i> {{ formation.frequence }}</span>
+        </div>
+
+        <!-- Message social proof -->
+        <div class="social-proof mb-3" *ngIf="formation.messageSocialProof">
+          <span class="badge bg-warning text-dark">{{ formation.messageSocialProof }}</span>
+        </div>
+
+        <!-- Description -->
+        <p class="formation-description">{{ formation.description }}</p>
+
+        <!-- Prix -->
+       <div class="prix-section mb-4">
+          <div class="prix-inscription">
+            <strong>Frais d'inscription :</strong>
+          <span class="price">{{ formatPrice(formation.fraisInscription!) }}</span>           </div>
+          <div class="prix-formation">
+            <strong>Prix de la formation :</strong>
+            <span class="price" *ngIf="!formation.enPromotion">
+              {{ formatPrice(formation.prix!) }}
+            </span>
+            <span *ngIf="formation.enPromotion">
+              <span class="old-price">{{ formatPrice(formation.prix!) }}</span>
+              <span class="new-price">{{ formatPrice(formation.prixAvecReduction!) }}</span>
+            </span>
+          </div>
+        </div>
+
+        <!-- Places disponibles -->
+        <div class="places-info mb-4">
+          <div class="progress mb-2">
+            <div class="progress-bar bg-info" role="progressbar"
+                 [style.width.%]="formation.tauxRemplissage"
+                 [attr.aria-valuenow]="formation.tauxRemplissage"
+                 aria-valuemin="0" aria-valuemax="100">
+            </div>
+          </div>
+          <small class="text-muted">
+            {{ formation.placesRestantes }} places restantes sur {{ formation.nombrePlaces }}
+            ({{ formation.nombreInscritsAffiche }} inscrits)
+          </small>
+        </div>
+
+        <!-- Actions -->
+        <div class="detail-actions mt-4">
+          <button class="btn btn-lg btn-primary me-3"
+                  [disabled]="formation.formationComplete"
+                  (click)="openInscriptionModal()">
+            {{ formation.formationComplete ? 'Complet' : 'S\'inscrire' }}
+          </button>
+          <button class="btn btn-lg btn-outline-secondary" (click)="openContactModal()">
+            Nous contacter
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Informations détaillées -->
+    <div class="row mt-5">
+      <div class="col-12">
+        <nav>
+          <div class="nav nav-tabs" id="nav-tab" role="tablist">
+            <button class="nav-link active" id="nav-programme-tab" data-bs-toggle="tab"
+                    data-bs-target="#nav-programme" type="button" role="tab">
+              Programme
+            </button>
+            <button class="nav-link" id="nav-objectifs-tab" data-bs-toggle="tab"
+                    data-bs-target="#nav-objectifs" type="button" role="tab">
+              Objectifs
+            </button>
+            <button class="nav-link" id="nav-materiel-tab" data-bs-toggle="tab"
+                    data-bs-target="#nav-materiel" type="button" role="tab">
+              Matériel fourni
+            </button>
+            <button class="nav-link" id="nav-horaires-tab" data-bs-toggle="tab"
+                    data-bs-target="#nav-horaires" type="button" role="tab">
+              Horaires
+            </button>
+            <button class="nav-link" id="nav-certification-tab" data-bs-toggle="tab"
+                    data-bs-target="#nav-certification" type="button" role="tab"
+                    *ngIf="formation.certificatDelivre">
+              Certification
+            </button>
+          </div>
+        </nav>
+        <div class="tab-content" id="nav-tabContent">
+          <div class="tab-pane fade show active" id="nav-programme" role="tabpanel">
+            <div class="tab-content-wrapper">
+              <h5><i class="fas fa-book"></i> Programme de formation</h5>
+              <p>{{ formation.programme }}</p>
+            </div>
+          </div>
+          <div class="tab-pane fade" id="nav-objectifs" role="tabpanel">
+            <div class="tab-content-wrapper">
+              <h5><i class="fas fa-bullseye"></i> Objectifs</h5>
+              <p>{{ formation.objectifs }}</p>
+            </div>
+          </div>
+          <div class="tab-pane fade" id="nav-materiel" role="tabpanel">
+            <div class="tab-content-wrapper">
+              <h5><i class="fas fa-tools"></i> Matériel fourni</h5>
+              <p>{{ formation.materielFourni }}</p>
+            </div>
+          </div>
+          <div class="tab-pane fade" id="nav-horaires" role="tabpanel">
+            <div class="tab-content-wrapper">
+              <h5><i class="fas fa-clock"></i> Horaires et fréquence</h5>
+              <p><strong>Horaires :</strong> {{ formation.horaires }}</p>
+              <p><strong>Fréquence :</strong> {{ formation.frequence }}</p>
+              <p><strong>Durée totale :</strong> {{ formation.duree }}</p>
+            </div>
+          </div>
+          <div class="tab-pane fade" id="nav-certification" role="tabpanel" *ngIf="formation.certificatDelivre">
+            <div class="tab-content-wrapper">
+              <h5><i class="fas fa-certificate"></i> Certification</h5>
+              <div class="certification-info">
+                <div class="cert-icon">
+                  <i class="fas fa-award"></i>
+                </div>
+                <div>
+                  <h6>{{ formation.nomCertificat }}</h6>
+                  <p>Un certificat officiel vous sera délivré à l'issue de cette formation.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Promotion en cours -->
+    <div class="promo-section mt-4" *ngIf="formation.enPromotion && formation.promoActive">
+      <div class="alert alert-warning">
+        <h5><i class="fas fa-fire"></i> Promotion en cours !</h5>
+        <p>
+          Profitez de {{ formation.pourcentageReduction }}% de réduction
+          <span *ngIf="formation.dateFinPromo">
+            jusqu'au {{ formation.dateFinPromo | date:'dd/MM/yyyy' }}
+          </span>
+        </p>
+      </div>
+    </div>
+
+    <!-- Suggestions autres formations -->
+    <div class="other-formations-section mt-5" *ngIf="autresFormations.length > 0">
+      <h4 class="mb-3">Vous pourriez aussi aimer :</h4>
+      <div class="row">
+        <div class="col-md-4" *ngFor="let f of autresFormations">
+          <div class="card other-formation-card">
+            <img [src]="f.photoPrincipale" [alt]="f.nom" class="card-img-top" />
+            <div class="card-body">
+              <h5 class="card-title">{{ f.nom }}</h5>
+              <p class="card-text">
+                <small class="text-muted">{{ f.duree }} - {{ f.categorie }}</small>
+              </p>
+              <div class="d-flex justify-content-between align-items-center">
+                <button class="btn btn-link" (click)="voirDetails(f.id)">
+                  Voir cette formation
+                </button>
+                <span class="price-small">{{ f.prix | currency:'XAF':'symbol':'1.0-0' }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modales -->
+    <app-inscription-modal *ngIf="showInscriptionModal" [formation]="formation" (close)="closeInscriptionModal()"></app-inscription-modal>
+    <app-contact-modal *ngIf="showContactModal" [formation]="formation" (close)="closeContactModal()"></app-contact-modal>
+  </div>
+</section>
+
+<!-- Loader / Erreur -->
+<div *ngIf="isLoading" class="loading-container">
+  <div class="loading-spinner"></div>
+  <p>Chargement de la formation...</p>
+</div>
+<div *ngIf="errorMessage" class="error-container">
+  <div class="status-icon">⚠️</div>
+  <p>{{ errorMessage }}</p>
+</div>
