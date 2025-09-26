@@ -1,4 +1,3 @@
-import { SwiperModule } from './../node_modules/swiper/types/shared.d';
 import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { HeaderComponent } from "./app/shared/components/header/header.component";

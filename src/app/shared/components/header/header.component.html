@@ -1,100 +1,132 @@
-   <!-- Spinner start-->
-@if (showSpinner) {<div id="spinner" class="show w-100 vh-100 bg-white position-fixed translate-middle top-50 start-50 d-flex align-items-center justify-content-center">
-            <div class="spinner-grow text-primary" role="status"></div>
-        </div>}
+<!-- Spinner start -->
+@if (showSpinner) {
+<div id="spinner" class="show w-100 vh-100 bg-white position-fixed translate-middle top-50 start-50 d-flex align-items-center justify-content-center">
+    <div class="spinner-grow" style="color: #884CD2;" role="status"></div>
+</div>
+}
+<!-- Spinner End -->
 
-        <!-- Spinner End -->
-
-
-        <!-- Navbar start -->
-        <div class="container-fluid sticky-top px-0">
-            <div class="container-fluid topbar d-none d-lg-block">
-                <div class="container px-0">
-                    <div class="row align-items-center">
-                        <div class="col-lg-8">
-                            <div class="d-flex flex-wrap">
-                                <a href="#" class="me-4 text-light"><i class="fas fa-map-marker-alt text-primary me-2"></i>Yaoundé, Cameroun</a>
-                                <a href="#" class="me-4 text-light"><i class="fas fa-phone-alt text-primary me-2"></i>690 56 68 36</a>
-                                <a href="#" class="text-light"><i class="fas fa-envelope text-primary me-2"></i>beautysempire47&#64;gmail.com</a>
-                            </div>
-
-                        </div>
-                        <div class="col-lg-4">
-                            <div class="d-flex align-items-center justify-content-end">
-                                <a href="https://www.facebook.com/p/Institut-Beautys-Empire-IBE-100084740873597/" class="me-3 btn-square border rounded-circle nav-fill"><i class="fab fa-facebook-f"></i></a>
-                                <!-- <a href="#" class="me-3 btn-square border rounded-circle nav-fill"><i class="fab fa-twitter"></i></a>
-                                <a href="#" class="me-3 btn-square border rounded-circle nav-fill"><i class="fab fa-instagram"></i></a>
-                                <a href="#" class="btn-square border rounded-circle nav-fill"><i class="fab fa-linkedin-in"></i></a> -->
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="container-fluid bg-light">
-                <div class="container px-0">
-                    <nav class="navbar navbar-light navbar-expand-xl">
-                        <a routerLink="/" class="navbar-brand d-flex align-items-center">
-                           <img src="assets/img/logo-ibe.png" alt="Logo IBE" style="height: 100px; margin-right: 10px;">
-                          <h1 class="text-primary display-4">IBE</h1>
+<!-- Navbar start -->
+<div class="container-fluid sticky-top px-0">
+    <!-- Topbar -->
+    <div class="container-fluid topbar d-none d-lg-block">
+        <div class="container px-0">
+            <div class="row align-items-center">
+                <div class="col-lg-8">
+                    <div class="d-flex flex-wrap topbar-info">
+                        <a href="tel:+237690566836" class="me-4">
+                            <i class="fas fa-map-marker-alt me-2"></i>
+                            Yaoundé, Cameroun
                         </a>
-                        <button class="navbar-toggler py-2 px-3" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
-                            <span class="fa fa-bars text-primary"></span>
-                        </button>
-                        <div class="collapse navbar-collapse bg-light py-3" id="navbarCollapse">
-                            <div class="navbar-nav mx-auto border-top">
-                                <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" class="nav-item nav-link">Acceuil</a>
-                                <a routerLink="/about" routerLinkActive="active" class="nav-item nav-link">Á Propos</a>
-                                <a routerLink="/formations" routerLinkActive="active" class="nav-item nav-link">Nos Formations</a>
-                                <a routerLink="/gallery" routerLinkActive="active" class="nav-item nav-link">Nos Photos</a>
-
-                              <a href="#" class="nav-item nav-link" (click)="openContactModal(); $event.preventDefault()">Contact</a>
-                            </div>
-
-                        </div>
-                    </nav>
-                </div>
-            </div>
-        </div>
-        <!-- Navbar End -->
-
-        <!-- Modal Search Start -->
-        <div class="modal fade" id="searchModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-fullscreen">
-                <div class="modal-content rounded-0">
-                    <div class="modal-header">
-                        <h4 class="modal-title mb-0" id="exampleModalLabel">Search by keyword</h4>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body d-flex align-items-center">
-                        <div class="input-group w-75 mx-auto d-flex">
-                            <input type="search" class="form-control p-3" placeholder="keywords" aria-describedby="search-icon-1">
-                            <span id="search-icon-1" class="input-group-text p-3"><i class="fa fa-search"></i></span>
-                        </div>
+                        <a href="tel:+237690566836" class="me-4">
+                            <i class="fas fa-phone-alt me-2"></i>
+                            690 56 68 36
+                        </a>
+                        <a href="mailto:beautysempire47@gmail.com">
+                            <i class="fas fa-envelope me-2"></i>
+                            beautysempire47&#64;gmail.com
+                        </a>
                     </div>
                 </div>
-            </div>
-        </div>
-        <!-- Modal Search End -->
-
-
-        <!-- Modal Search Start -->
-        <div class="modal fade" id="searchModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-fullscreen">
-                <div class="modal-content rounded-0">
-                    <div class="modal-header">
-                        <h4 class="modal-title mb-0" id="exampleModalLabel">Search by keyword</h4>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body d-flex align-items-center">
-                        <div class="input-group w-75 mx-auto d-flex">
-                            <input type="search" class="form-control p-3" placeholder="keywords" aria-describedby="search-icon-1">
-                            <span id="search-icon-1" class="input-group-text p-3"><i class="fa fa-search"></i></span>
-                        </div>
+                <div class="col-lg-4">
+                    <div class="d-flex align-items-center justify-content-end social-links">
+                        <a href="https://www.facebook.com/p/Institut-Beautys-Empire-IBE-100084740873597/"
+                           target="_blank"
+                           rel="noopener noreferrer"
+                           class="me-3"
+                           title="Suivez-nous sur Facebook">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <!-- Liens sociaux supplémentaires (décommentez si nécessaire) -->
+                        <!--
+                        <a href="#" class="me-3" title="Suivez-nous sur Instagram">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#" class="me-3" title="Suivez-nous sur Twitter">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" title="Suivez-nous sur LinkedIn">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                        -->
                     </div>
                 </div>
             </div>
         </div>
+    </div>
+
+    <!-- Main Navbar -->
+    <div class="container-fluid main-navbar">
+        <div class="container px-0">
+            <nav class="navbar navbar-expand-xl ">
+                <a routerLink="/" class="navbar-brand">
+                    <img src="assets/img/logo-ibe.png" alt="Logo Institut Beautys Empire">
+                    <h1>IBE</h1>
+                </a>
+
+                <button class="navbar-toggler"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#navbarCollapse"
+                        aria-controls="navbarCollapse"
+                        aria-expanded="false"
+                        aria-label="Toggle navigation">
+                    <i class="fa fa-bars"></i>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbarCollapse">
+                    <div class="navbar-nav ms-auto">
+                        <div class="nav-item">
+                            <a routerLink="/"
+                               routerLinkActive="active"
+                               [routerLinkActiveOptions]="{exact: true}"
+                               class="nav-link">
+                                <i class="fas fa-home me-2 d-lg-none"></i>
+                                Accueil
+                            </a>
+                        </div>
+                        <div class="nav-item">
+                            <a routerLink="/about"
+                               routerLinkActive="active"
+                               class="nav-link">
+                                <i class="fas fa-info-circle me-2 d-lg-none"></i>
+                                À Propos
+                            </a>
+                        </div>
+                        <div class="nav-item">
+                            <a routerLink="/formations"
+                               routerLinkActive="active"
+                               class="nav-link">
+                                <i class="fas fa-graduation-cap me-2 d-lg-none"></i>
+                                Nos Formations
+                            </a>
+                        </div>
+                        <div class="nav-item">
+                            <a routerLink="/gallery"
+                               routerLinkActive="active"
+                               class="nav-link">
+                                <i class="fas fa-images me-2 d-lg-none"></i>
+                                Nos Photos
+                            </a>
+                        </div>
+                        <div class="nav-item">
+                            <a href="#"
+                               class="nav-link"
+                               (click)="openContactModal(); $event.preventDefault()">
+                                <i class="fas fa-envelope me-2 d-lg-none"></i>
+                                Contact
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </div>
+</div>
+<!-- Navbar End -->
+
+<!-- Modal de Contact -->
 <app-contact-modal
-  *ngIf="showContactModal"
-  (close)="closeContactModal()"
-></app-contact-modal>
+    *ngIf="showContactModal"
+    (close)="closeContactModal()">
+</app-contact-modal>

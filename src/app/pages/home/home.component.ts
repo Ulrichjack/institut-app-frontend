@@ -9,10 +9,11 @@ import { ArgumentInfoComponent } from "../argument-info/argument-info.component"
 import { TestimonialCarouselComponent } from "../testimonial-carousel/testimonial-carousel.component";
 import { MapComponent } from "../map/map.component";
 import { StatsSectionComponent } from "../stats-section/stats-section.component";
+import { PartenairesCarouselComponent } from "../partenaires-carousel/partenaires-carousel.component";
 
 @Component({
   selector: 'app-home',
-  imports: [CarouselComponent, HomeFormationsComponent, GalleryHomeComponent, TestimonialCarouselComponent, MapComponent, StatsSectionComponent],
+  imports: [CarouselComponent, HomeFormationsComponent, GalleryHomeComponent, TestimonialCarouselComponent, MapComponent, StatsSectionComponent, PartenairesCarouselComponent],
 
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'

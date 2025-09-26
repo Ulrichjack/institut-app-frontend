@@ -1,0 +1,27 @@
+<section class="partenaires">
+  <div class="container">
+    <h2 class="partenaires-title">Ils nous ont fait confiance</h2>
+    <p class="partenaires-subtitle">
+      Rejoignez notre réseau de partenaires et développez votre activité grâce à des outils performants et un accompagnement sur mesure.
+    </p>
+
+    <div class="partners-grid">
+      <div class="partner-card"
+           *ngFor="let partenaire of partenaires; trackBy: trackByPartenaireNom"
+           (mouseenter)="onLogoHover($event, true)"
+           (mouseleave)="onLogoHover($event, false)">
+        <div class="partner-logo-container">
+          <img
+            [src]="partenaire.logo"
+            [alt]="partenaire.nom"
+            loading="lazy"
+            class="partenaire-logo" />
+        </div>
+         <div class="partner-name">
+          {{ partenaire.nom }}
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
