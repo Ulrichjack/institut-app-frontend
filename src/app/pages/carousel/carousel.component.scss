@@ -242,12 +242,67 @@
     }
 }
 
-@media (max-width: 576px) {
-    .carousel-item {
-        min-height: 70vh;
-    }
+// @media (max-width: 576px) {
+//       .carousel-caption {
 
-    .carousel-caption .content-box {
+//       }
+//     .carousel-item {
+//         min-height: 70vh;
+//     }
+
+//     .carousel-caption .content-box {
+//         margin: 0 15px;
+//         padding: 25px 20px;
+//     }
+
+//     .carousel-caption h1 {
+//         font-size: 1.8rem;
+//     }
+
+//     .carousel-caption h4 {
+//         font-size: 0.9rem;
+//         margin-bottom: 10px;
+//     }
+// }
+@media (max-width: 576px) {
+    .carousel-caption {
+        // Optionnel: Réduire la marge inférieure pour rapprocher du bas
+        bottom: 10% !important;
+
+        // Réduire la largeur du conteneur de texte pour prendre moins de place horizontalement
+        .content-box {
+            width: 90%; // Au lieu de 70-80% sur grand écran
+            padding: 1rem; // Réduire l'espacement interne
+        }
+
+        h4 {
+            font-size: 0.9rem; // Réduire la sous-titre
+            margin-bottom: 0.5rem;
+        }
+
+        h1 {
+            font-size: 1rem; // Réduire le titre principal
+            line-height: 1.2;
+            margin-bottom: 0.8rem;
+        }
+
+        p {
+            // C'est souvent le paragraphe qui prend le plus de place.
+            // On le cache ou on réduit beaucoup sa taille.
+            font-size: 0.7rem;
+            // display: none; // Masquer complètement la description sur petit écran est souvent la meilleure solution.
+        }
+
+        // Cacher les boutons ou ajuster leur taille
+        div {
+            a.btn {
+                padding: 0.5rem 0.8rem;
+                font-size: 0.8rem;
+                margin-top: 0.5rem;
+            }
+        }
+
+        .carousel-caption .content-box {
         margin: 0 15px;
         padding: 25px 20px;
     }
@@ -259,6 +314,7 @@
     .carousel-caption h4 {
         font-size: 0.9rem;
         margin-bottom: 10px;
+     }
     }
 }
 

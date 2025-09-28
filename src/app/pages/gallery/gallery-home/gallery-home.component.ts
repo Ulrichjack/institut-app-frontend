@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, AfterViewInit, ElementRef } from '@angular/core';
-import { GalleryImage, GalleryService } from '../../../core/services/gallery.service';
+import { GalleryImage, GalleryService } from '../../../shared/services/gallery.service';
 import { CommonModule } from '@angular/common';
 import { GalleryModalComponent } from "../gallery-modal/gallery-modal.component";
 import { ArgumentInfo, ArgumentInfoComponent } from '../../argument-info/argument-info.component';
@@ -119,8 +119,8 @@ export class GalleryHomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
   argumentsList: ArgumentInfo[] = [
     {
-    title: 'Devenez expert(e) dans la beauté qui vous passionne',
-    description: 'Maîtrisez des compétences recherchées en coiffure, esthétique, maquillage, onglerie ou cosmétique, grâce à nos formations conçues pour révéler votre talent unique.'
+    title: 'Transformez votre passion en expertise recherchée',
+    description: `Maîtrisez l'art de la coiffure, de l'esthétique, du maquillage, de l'onglerie ou de la cosmétique. Nos formations sont conçues pour vous donner les compétences professionnelles et révéler le talent unique qui sommeille en vous.`
   },
   {
     title: 'Programmes sur-mesure pour votre réussite',

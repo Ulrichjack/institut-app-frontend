@@ -7,11 +7,13 @@ import { CommonModule } from '@angular/common';
 import { FormationDetailDto } from '../../shared/dtos/formation-detail-dto.model';
 import { InscriptionModalComponent } from "../inscription-modal/inscription-modal.component";
 import { ContactModalComponent } from "../contact-modal/contact-modal.component";
+import { GalleryImage } from '../../shared/services/gallery.service';
 import { Location } from '@angular/common';
+import { GalleryModalComponent } from '../gallery/gallery-modal/gallery-modal.component';
 
 @Component({
   selector: 'app-formation-detail',
-  imports: [CommonModule, InscriptionModalComponent, ContactModalComponent],
+  imports: [CommonModule, InscriptionModalComponent, ContactModalComponent, GalleryModalComponent],
   templateUrl: './formation-detail.component.html',
   styleUrls: ['./formation-detail.component.scss']
 })
@@ -20,11 +22,16 @@ export class FormationDetailComponent implements OnInit {
   autresFormations: FormationListDto[] = [];
   showInscriptionModal = false;
   showContactModal = false;
+  showGalleryModal = false;
   isLoading = false;
   errorMessage: string | null = null;
 
+  // Propriétés pour la galerie
+  galleryImages: GalleryImage[] = [];
+  currentGalleryIndex = 0;
+
   private readonly route = inject(ActivatedRoute);
-  private readonly  formationService = inject(FormationService);
+  private readonly formationService = inject(FormationService);
   private readonly router = inject(Router);
   private readonly location = inject(Location);
 
@@ -50,6 +57,7 @@ export class FormationDetailComponent implements OnInit {
         this.isLoading = false;
         if (response.success && response.data) {
           this.formation = response.data;
+          this.prepareGalleryImages();
         } else {
           this.errorMessage = response.message || 'Formation non trouvée.';
         }
@@ -62,25 +70,66 @@ export class FormationDetailComponent implements OnInit {
     });
   }
 
-loadAutresFormations(slug: string): void {
-  this.formationService.getFormationsList(0, 100).subscribe({
-    next: (response: ApiResponse<any>) => {
-      if (response.success && response.data) {
-        let allFormations = response.data.content.filter((f: any) => f.slug !== slug);
-        // Mélanger et prendre 3 au hasard
-        this.autresFormations = allFormations
-          .sort(() => Math.random() - 0.5)
-          .slice(0, 3);
-      } else {
+  loadAutresFormations(slug: string): void {
+    this.formationService.getFormationsList(0, 100).subscribe({
+      next: (response: ApiResponse<any>) => {
+        if (response.success && response.data) {
+          let allFormations = response.data.content.filter((f: any) => f.slug !== slug);
+          // Mélanger et prendre 3 au hasard
+          this.autresFormations = allFormations
+            .sort(() => Math.random() - 0.5)
+            .slice(0, 3);
+        } else {
+          this.autresFormations = [];
+        }
+      },
+      error: (err) => {
         this.autresFormations = [];
+        console.error(err);
       }
-    },
-    error: (err) => {
-      this.autresFormations = [];
-      console.error(err);
+    });
+  }
+
+  /**
+   * Prépare les images de la galerie à partir des photosGalerie de la formation
+   */
+  private prepareGalleryImages(): void {
+    if (this.formation && this.formation.photosGalerie) {
+      this.galleryImages = this.formation.photosGalerie.map((url, index) => ({
+        id: index + 1, // ID numérique basé sur l'index
+        url: url,
+        titre: `Photo ${index + 1} - ${this.formation!.nom}`,
+        description: `Image de la formation ${this.formation!.nom}`,
+        categorie: 'FORMATION',
+        dateCreation: new Date().toISOString(), // Vous pouvez ajuster selon vos données
+        isPublic: true // Les photos de formation sont publiques par défaut
+      } as GalleryImage));
     }
-  });
-}
+  }
+
+  /**
+   * Ouvre le modal de galerie à partir d'un index spécifique
+   */
+  openGalleryModal(startIndex: number = 0): void {
+    if (this.galleryImages.length > 0) {
+      this.currentGalleryIndex = Math.max(0, Math.min(startIndex, this.galleryImages.length - 1));
+      this.showGalleryModal = true;
+    }
+  }
+
+  /**
+   * Ferme le modal de galerie
+   */
+  closeGalleryModal(): void {
+    this.showGalleryModal = false;
+  }
+
+  /**
+   * Gère le changement d'index dans la galerie
+   */
+  onGalleryIndexChange(newIndex: number): void {
+    this.currentGalleryIndex = newIndex;
+  }
 
   private initializeBootstrapTabs(): void {
     // Attendre que le DOM soit rendu
@@ -166,14 +215,43 @@ loadAutresFormations(slug: string): void {
     return 'Promotion limitée dans le temps !';
   }
 
-  // Dans votre composant
-formatPrice(amount: number): string {
-  return `${amount.toLocaleString('fr-FR')} FCFA`;
-}
+  /**
+   * Formate le prix au format FCFA
+   */
+  formatPrice(amount: number): string {
+    return `${amount.toLocaleString('fr-FR')} FCFA`;
+  }
 
-retour() {
-  // Retour navigateur, ou remplace par : this.router.navigate(['/formations']);
-  this.location.back();
-}
+  /**
+   * Retour à la page précédente
+   */
+  retour(): void {
+    // Retour navigateur, ou remplace par : this.router.navigate(['/formations']);
+    this.location.back();
+  }
 
+  /**
+   * Vérifie si la formation a des photos dans la galerie
+   */
+  get hasGalleryPhotos(): boolean {
+    return !!(this.formation?.photosGalerie && this.formation.photosGalerie.length > 0);
+  }
+
+  /**
+   * Retourne le nombre total de photos dans la galerie
+   */
+  get galleryPhotosCount(): number {
+    return this.formation?.photosGalerie?.length || 0;
+  }
+
+  /**
+   * Retourne les photos à afficher (maximum 8 pour la grille)
+   */
+  get displayedGalleryPhotos(): string[] {
+    if (!this.formation?.photosGalerie) {
+      return [];
+    }
+    // Limiter à 8 photos maximum pour l'affichage en grille
+    return this.formation.photosGalerie.slice(0, 8);
+  }
 }

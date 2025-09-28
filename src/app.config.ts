@@ -11,7 +11,7 @@ export const appConfig: ApplicationConfig = {
      provideRouter(routes),
     importProvidersFrom(ReactiveFormsModule),
     provideAnimations(),
-    provideHttpClient()
+    provideHttpClient(),
   ]
 
 }

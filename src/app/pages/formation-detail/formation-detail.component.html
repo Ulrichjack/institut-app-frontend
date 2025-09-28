@@ -9,15 +9,6 @@
       <div class="col-lg-5 col-md-6 detail-photo-wrap">
         <img [src]="formation.photoPrincipale" [alt]="formation.nom" class="img-fluid rounded" />
 
-        <!-- Galerie photos supplémentaires -->
-        <div class="photos-galerie mt-3" *ngIf="formation.photosGalerie && formation.photosGalerie.length > 0">
-          <div class="row g-2">
-            <div class="col-6" *ngFor="let photo of formation.photosGalerie">
-              <img [src]="photo" [alt]="formation.nom" class="img-fluid rounded small-gallery-img" />
-            </div>
-          </div>
-        </div>
-
         <!-- Vidéo de présentation -->
         <div class="video-presentation mt-3" *ngIf="formation.videoPresentation">
           <video [src]="formation.videoPresentation" controls class="img-fluid rounded">
@@ -92,6 +83,37 @@
             Nous contacter
           </button>
         </div>
+      </div>
+    </div>
+
+    <!-- Galerie Photos de la Formation -->
+    <div class="photo-gallery-section" *ngIf="formation.photosGalerie && formation.photosGalerie.length > 0">
+      <h4 class="gallery-title">
+        <i class="fas fa-images"></i>
+        Galerie photos de la formation
+        <span class="photo-count">({{ formation.photosGalerie.length }} photo{{ formation.photosGalerie.length > 1 ? 's' : '' }})</span>
+      </h4>
+
+      <div class="photo-gallery-grid">
+        <div class="gallery-photo"
+             *ngFor="let photo of formation.photosGalerie; let i = index"
+             (click)="openGalleryModal(i)">
+          <img [src]="photo" [alt]="'Photo ' + (i + 1) + ' de la formation ' + formation.nom" loading="lazy">
+          <div class="gallery-photo-overlay">
+            <div class="overlay-content">
+              <i class="fas fa-search-plus"></i>
+              <span>Voir en grand</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Indicateur s'il y a plus de 8 photos affichées -->
+      <div class="gallery-info" *ngIf="formation.photosGalerie.length > 8">
+        <small class="text-muted">
+          <i class="fas fa-info-circle"></i>
+          Cliquez sur une photo pour voir toute la galerie
+        </small>
       </div>
     </div>
 
@@ -208,6 +230,16 @@
     <!-- Modales -->
     <app-inscription-modal *ngIf="showInscriptionModal" [formation]="formation" (close)="closeInscriptionModal()"></app-inscription-modal>
     <app-contact-modal *ngIf="showContactModal" [formation]="formation" (close)="closeContactModal()"></app-contact-modal>
+
+    <!-- Modal Galerie -->
+    <app-gallery-modal
+      *ngIf="showGalleryModal"
+      [images]="galleryImages"
+      [currentIndex]="currentGalleryIndex"
+      [isVisible]="showGalleryModal"
+      (close)="closeGalleryModal()"
+      (indexChange)="onGalleryIndexChange($event)">
+    </app-gallery-modal>
   </div>
 </section>
 

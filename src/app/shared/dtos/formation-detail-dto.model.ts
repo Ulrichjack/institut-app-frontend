@@ -1,3 +1,11 @@
+export interface GalleryImageDto {
+  id: number;
+  url: string;
+  titre?: string;
+  description?: string;
+  categorie?: string;
+}
+
 export interface FormationDetailDto {
   id: number;
   nom: string;
@@ -35,4 +43,5 @@ export interface FormationDetailDto {
   nombreDemandesInfo: number;
   nombreInscriptions: number;
   dateCreation: string;
+  imagesGalerie?: GalleryImageDto[]; 
 }

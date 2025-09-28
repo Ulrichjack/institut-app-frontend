@@ -1,98 +1,371 @@
-.modal-backdrop {
-  position: fixed;
-  top: 0; left: 0; right: 0; bottom: 0;
-  background: rgba(0,0,0,0.55);
-  z-index: 1000;
-}
+// Variables
+$primary-color: #884cd2;
+$secondary-color: #ff4f9d;
 
-.gallery-modal {
+.modal-overlay {
   position: fixed;
-  top: 50%; left: 50%;
-  transform: translate(-50%, -50%);
-  background: #fff;
-  z-index: 1001;
-  border-radius: 18px;
-  box-shadow: 0 4px 28px rgba(40, 40, 40, 0.23);
-  padding: 2.2rem 1.4rem 2.2rem 1.4rem;
-  min-width: 340px;
-  max-width: 96vw;
-  max-height: 90vh;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.95);
   display: flex;
-  flex-direction: column;
   align-items: center;
-}
-
-.close-btn {
-  position: absolute;
-  right: 1.4rem;
-  top: 1.2rem;
-  font-size: 2.2rem;
-  background: none;
-  border: none;
-  cursor: pointer;
-  color: #555;
-  z-index: 1002;
+  justify-content: center;
+  z-index: 10000;
+  backdrop-filter: blur(5px);
+  animation: modalFadeIn 0.3s ease-out;
 }
 
 .modal-content {
-  width: 100%;
+  position: relative;
+  width: 95vw;
+  height: 95vh;
+  max-width: 1200px;
+  background: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  animation: modalSlideIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.modal-header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  background: linear-gradient(180deg, rgba(0,0,0,0.7) 0%, transparent 100%);
+  padding: 1rem;
+}
+
+.modal-controls {
+  display: flex;
+  justify-content: space-between;
   align-items: center;
 }
 
-.image-area {
-  width: 100%;
-  text-align: center;
+.image-counter {
+  color: #fff;
+  font-weight: 600;
+  font-size: 1rem;
+  background: rgba(0, 0, 0, 0.5);
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  backdrop-filter: blur(10px);
+}
 
-  img {
-    display: block;
-    margin: 0 auto;
-    max-width: 540px;
-    max-height: 55vh;
-    border-radius: 10px;
-    box-shadow: 0 1px 8px #e1e1e1;
-    background: #eee;
+.modal-btn {
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  color: #fff;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: scale(1.1);
   }
 
-  .caption {
-    margin: 1.2rem 0 0.6rem 0;
-    h3 { margin-bottom: .4rem; font-size: 1.3rem; font-weight: 700; }
-    p { color: #444; font-size: 1.08rem; margin-bottom: 0; }
-  }
-
-  .nav-area {
-    margin-top: 1.2rem;
-    display: flex;
-    justify-content: center;
-    gap: 2.5rem;
-    align-items: center;
-  }
-
-  .nav-btn {
-    font-size: 1.19rem;
-    background: #2c5282;
-    color: #fff;
-    border: none;
-    border-radius: 8px;
-    padding: 0.5rem 1.6rem;
-    transition: background 0.15s;
-    cursor: pointer;
-    font-weight: 600;
-    box-shadow: 0 2px 8px rgba(30, 41, 59, 0.09);
-
-    &:hover:enabled {
-      background: #205080;
-    }
-    &:disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
-    }
+  i {
+    font-size: 1.2rem;
   }
 }
 
-@media (max-width: 600px) {
-  .gallery-modal { padding: .6rem; }
-  .image-area img { max-width: 98vw; max-height: 44vh; }
-  .image-area .nav-area { gap: 1.2rem; }
+.nav-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 100;
+  background: rgba(0, 0, 0, 0.6);
+  border: none;
+  color: #fff;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+
+  &:hover:not(:disabled) {
+    background: rgba(0, 0, 0, 0.8);
+    transform: translateY(-50%) scale(1.1);
+  }
+
+  &:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+  }
+
+  &.nav-prev {
+    left: 2rem;
+  }
+
+  &.nav-next {
+    right: 2rem;
+  }
+
+  i {
+    font-size: 1.5rem;
+  }
+}
+
+.image-container {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f8f9fa;
+  position: relative;
+  overflow: hidden;
+}
+
+.image-wrapper {
+  position: relative;
+  max-width: 100%;
+  max-height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.image-loading {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  color: #666;
+
+  .loading-spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid #e0e0e0;
+    border-top: 3px solid $primary-color;
+    border-radius: 50%;
+    animation: modalSpin 1s linear infinite;
+  }
+}
+
+.modal-image {
+  max-width: 100%;
+  max-height: 70vh;
+  object-fit: contain;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  border-radius: 8px;
+
+  &.loaded {
+    opacity: 1;
+  }
+}
+
+.event-badge {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: linear-gradient(135deg, $primary-color 0%, $secondary-color 100%);
+  color: #fff;
+  padding: 0.5rem 1rem;
+  border-radius: 25px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  box-shadow: 0 4px 12px rgba($primary-color, 0.4);
+}
+
+.image-info {
+  background: #fff;
+  padding: 1.5rem;
+  border-top: 1px solid #e0e0e0;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.image-details {
+  margin-bottom: 1rem;
+}
+
+.image-title {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #2c2c2c;
+  margin-bottom: 0.5rem;
+}
+
+.image-description {
+  color: #666;
+  line-height: 1.6;
+  margin-bottom: 1rem;
+}
+
+.image-metadata {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.meta-item {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  color: #555;
+  font-size: 0.9rem;
+
+  i {
+    color: $primary-color;
+    width: 16px;
+  }
+}
+
+.image-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.action-btn {
+  background: linear-gradient(135deg, $primary-color 0%, $secondary-color 100%);
+  color: #fff;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  transition: all 0.3s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba($primary-color, 0.3);
+  }
+}
+
+.thumbnails-container {
+  background: #f8f9fa;
+  padding: 1rem;
+  border-top: 1px solid #e0e0e0;
+  max-height: 100px;
+  overflow-x: auto;
+}
+
+.thumbnails-wrapper {
+  display: flex;
+  gap: 0.5rem;
+  min-width: min-content;
+}
+
+.thumbnail {
+  width: 60px;
+  height: 60px;
+  border-radius: 6px;
+  overflow: hidden;
+  cursor: pointer;
+  position: relative;
+  border: 2px solid transparent;
+  transition: all 0.3s ease;
+
+  &.active {
+    border-color: $primary-color;
+    transform: scale(1.1);
+  }
+
+  &:hover {
+    transform: scale(1.05);
+  }
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .thumbnail-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0);
+    transition: background 0.3s ease;
+  }
+
+  &:not(.active):hover .thumbnail-overlay {
+    background: rgba(0, 0, 0, 0.2);
+  }
+}
+
+// Animations
+@keyframes modalFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes modalSlideIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9) translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+@keyframes modalSpin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+// Responsive
+@media (max-width: 768px) {
+  .modal-content {
+    width: 100vw;
+    height: 100vh;
+    border-radius: 0;
+  }
+
+  .nav-btn {
+    width: 50px;
+    height: 50px;
+
+    &.nav-prev { left: 1rem; }
+    &.nav-next { right: 1rem; }
+  }
+
+  .image-info {
+    max-height: 150px;
+    padding: 1rem;
+  }
+
+  .image-title {
+    font-size: 1.2rem;
+  }
+
+  .image-actions {
+    flex-direction: column;
+  }
+
+  .thumbnails-container {
+    display: none; // Masquer sur mobile pour gagner de l'espace
+  }
 }

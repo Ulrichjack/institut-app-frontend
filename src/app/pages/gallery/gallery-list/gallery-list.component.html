@@ -1,24 +1,181 @@
 <div class="gallery-list">
   <h2 class="gallery-title">Galerie Photos & Événements</h2>
-  <div class="image-grid">
-    <div *ngFor="let img of images; let i = index" class="image-item" [style.animation-delay]="(i * 90) + 'ms'">
-      <div class="img-container">
-        <img [src]="img.url" [alt]="img.titre" class="gallery-img" />
-        <div class="event-badge" *ngIf="img.isEvent">Événement</div>
+
+  <!-- Barre de recherche améliorée -->
+  <div class="gallery-search mb-4">
+    <form (submit)="$event.preventDefault()">
+      <div class="search-input-container">
+        <i class="fas fa-search search-icon"></i>
+        <input type="text"
+               [(ngModel)]="searchQuery"
+               (input)="onSearchInput()"
+               name="search"
+               placeholder="Rechercher par nom de formation..."
+               class="form-control"
+               autocomplete="off" />
+        <button type="button"
+                class="clear-search"
+                *ngIf="searchQuery && searchQuery.length > 0"
+                (click)="clearSearch()"
+                aria-label="Effacer la recherche">
+          <i class="fas fa-times"></i>
+        </button>
       </div>
-      <div class="img-info">
-        <h4 class="img-title">{{ img.titre }}</h4>
-        <p class="img-description">{{ img.description }}</p>
+
+      <div class="search-buttons">
+        <button type="button"
+                class="btn btn-primary"
+                (click)="searchImages(0)"
+                [disabled]="isLoading">
+          <i class="fas fa-search"></i>
+          <span>Rechercher</span>
+        </button>
+        <button type="button"
+                class="btn btn-secondary"
+                (click)="resetSearch()"
+                *ngIf="isSearching">
+          <i class="fas fa-undo"></i>
+          <span>Réinitialiser</span>
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <!-- État de chargement -->
+  <div class="loading-container" *ngIf="isLoading">
+    <div class="loading-spinner">
+      <div class="spinner-ring"></div>
+    </div>
+    <p class="loading-text">Chargement des images...</p>
+  </div>
+
+  <!-- État vide -->
+  <div class="empty-state" *ngIf="!isLoading && images.length === 0">
+    <div class="empty-illustration">
+      <div class="empty-frame"></div>
+      <div class="empty-frame"></div>
+      <div class="empty-frame"></div>
+    </div>
+    <h3 class="empty-title">Aucune image trouvée</h3>
+    <p class="empty-message">
+      <span *ngIf="isSearching">Aucun résultat pour votre recherche. Essayez avec d'autres mots-clés.</span>
+      <span *ngIf="!isSearching">Aucune image n'est disponible pour le moment.</span>
+    </p>
+  </div>
+
+  <!-- Grille d'images avec clic pour ouvrir le modal -->
+  <div class="image-grid" *ngIf="!isLoading && images.length > 0">
+    <div *ngFor="let img of images; let i = index"
+         class="image-item"
+         [style.animation-delay]="(i * 100) + 'ms'"
+         (click)="openModal(i)">
+
+      <div class="photo-frame">
+        <div class="img-container">
+          <!-- Placeholder de chargement -->
+          <div class="img-placeholder">
+            <i class="fas fa-image placeholder-icon"></i>
+          </div>
+
+          <!-- Image principale -->
+          <img [src]="img.url"
+               [alt]="img.titre"
+               class="gallery-img"
+               loading="lazy" />
+
+          <!-- Overlay au survol -->
+          <div class="image-overlay">
+            <div class="overlay-content">
+              <i class="fas fa-expand-alt overlay-icon"></i>
+              <span class="overlay-text">Agrandir</span>
+            </div>
+          </div>
+
+          <!-- Badge événement -->
+          <div class="event-badge" *ngIf="isEventImage(img)">
+            <i class="fas fa-calendar"></i>
+            Événement
+          </div>
+
+          <!-- Badge qualité d'image -->
+          <div class="image-quality-badge">
+            <i class="fas fa-hd-video"></i>
+            HD
+          </div>
+        </div>
+
+        <!-- Informations de l'image -->
+        <div class="img-info">
+          <h4 class="img-title">{{ img.titre }}</h4>
+          <p class="img-description" *ngIf="img.description">{{ img.description }}</p>
+
+          <!-- Métadonnées -->
+          <div class="img-metadata">
+            <div class="img-category" *ngIf="img.categorie">
+              <i class="fas fa-tag"></i>
+              <span>{{ getCategoryLabel(img.categorie) }}</span>
+            </div>
+            <div class="img-date" *ngIf="img.dateCreation">
+              <i class="fas fa-calendar-alt"></i>
+              <span>{{ img.dateCreation | date:'dd/MM/yyyy' }}</span>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
-  <div class="pagination">
-    <button (click)="prevPage()" [disabled]="page === 0" class="page-btn">
-      <i class="fas fa-chevron-left"></i> Précédent
+
+  <!-- Pagination -->
+  <div class="pagination" *ngIf="!isLoading && images.length > 0 && totalPages > 1">
+    <!-- Bouton première page -->
+    <button (click)="onPageChange(0)"
+            [disabled]="page === 0"
+            class="page-btn page-first"
+            title="Première page">
+      <i class="fas fa-angle-double-left"></i>
     </button>
-    <span>Page <strong>{{ page + 1 }}</strong> sur <strong>{{ totalPages }}</strong></span>
-    <button (click)="nextPage()" [disabled]="page >= totalPages - 1" class="page-btn">
-      Suivant <i class="fas fa-chevron-right"></i>
+
+    <!-- Bouton précédent -->
+    <button (click)="onPageChange(page - 1)"
+            [disabled]="page === 0"
+            class="page-btn page-prev">
+      <i class="fas fa-chevron-left"></i>
+      Précédent
+    </button>
+
+    <!-- Informations de page -->
+    <div class="page-info">
+      <div class="page-current">
+        Page <strong>{{ page + 1 }}</strong> sur <strong>{{ totalPages }}</strong>
+      </div>
+      <div class="results-count">
+        {{ totalElements }} image(s) au total
+      </div>
+    </div>
+
+    <!-- Bouton suivant -->
+    <button (click)="onPageChange(page + 1)"
+            [disabled]="page >= totalPages - 1"
+            class="page-btn page-next">
+      Suivant
+      <i class="fas fa-chevron-right"></i>
+    </button>
+
+    <!-- Bouton dernière page -->
+    <button (click)="onPageChange(totalPages - 1)"
+            [disabled]="page >= totalPages - 1"
+            class="page-btn page-last"
+            title="Dernière page">
+      <i class="fas fa-angle-double-right"></i>
     </button>
   </div>
+
+  <!-- MODAL GALERIE - NOUVEAU -->
+  <app-gallery-modal
+    [images]="images"
+    [currentIndex]="selectedImageIndex"
+    [isVisible]="isModalOpen"
+    (close)="closeModal()"
+    (indexChange)="onModalIndexChange($event)">
+  </app-gallery-modal>
 </div>

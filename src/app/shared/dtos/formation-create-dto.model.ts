@@ -16,7 +16,6 @@ export interface FormationCreateDto {
   nombrePlaces: number;
   nombreInscritsAffiche: number;
   photoPrincipale?: string;
-  videoPresentation?: string;
   photosGalerie: string[];
   enPromotion: boolean;
   pourcentageReduction: number;

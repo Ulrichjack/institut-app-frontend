@@ -6,6 +6,7 @@ import { Observable } from 'rxjs';
 import { FormationListDto } from '../dtos/formation-list-dto.model';
 import { FormationDetailDto } from '../dtos/formation-detail-dto.model';
 import { ApiResponse } from '../dtos/api-response.model';
+import { FormationSimpleDto } from '../dtos/formationSimpleDto';
 
 @Injectable({
   providedIn: 'root'
@@ -52,6 +53,12 @@ getFormationDetailBySlug(slug: string) {
   return this.http.get<ApiResponse<any>>(`${this.apiBaseUrl}/formations/slug/${slug}`);
 }
 
+
+getFormationsForSelection(): Observable<ApiResponse<FormationSimpleDto[]>> {
+  return this.http.get<ApiResponse<FormationSimpleDto[]>>(
+    `${this.apiBaseUrl}/formations/selection`
+  );
+}
 
 
 

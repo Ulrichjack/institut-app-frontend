@@ -61,9 +61,12 @@
                 </div>
                 <!-- Optionnel : associer à une formation -->
                 <div class="mb-3">
-                  <label for="formationId" class="form-label">Associer à une formation (ID)</label>
-                  <input type="number" id="formationId" formControlName="formationId" class="form-control">
-                </div>
+  <label for="formationId" class="form-label">Associer à une formation</label>
+  <select id="formationId" formControlName="formationId" class="form-select">
+    <option [value]="null">Aucune</option>
+    <option *ngFor="let f of formations" [value]="f.id">{{ f.nom }}</option>
+  </select>
+</div>
                 <div class="text-center mt-4">
                   <button type="submit" class="btn btn-primary btn-lg px-5" [disabled]="imageForm.invalid  || isLoading">
                     <span *ngIf="!isLoading">Ajouter l'image</span>

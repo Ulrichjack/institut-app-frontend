@@ -1,7 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { GalleryService } from '../../core/services/gallery.service';
+import { GalleryService } from '../../shared/services/gallery.service';
+import { FormationService } from '../../shared/services/formation.service';
 
 @Component({
   selector: 'app-gallery-image-creation',
@@ -14,15 +15,18 @@ export class GalleryImageCreationComponent implements OnInit {
   isLoading: boolean = false;
   successMessage: string | null = null;
   errorMessage: string | null = null;
+  formations: { id: number, nom: string }[] = [];
 
   selectedFile: File | null = null;
   imagePreview: string | null = null; // Aperçu local
 
   private readonly fb = inject(FormBuilder);
   private readonly galleryService = inject(GalleryService);
+  private readonly formationService = inject(FormationService);
 
   ngOnInit(): void {
     this.initForm();
+    this.loadFormations();
   }
 
   private initForm(): void {
@@ -34,6 +38,16 @@ export class GalleryImageCreationComponent implements OnInit {
       formationId: [null]
     });
   }
+
+  loadFormations(): void {
+  // Appelle ton service qui retourne la liste simplifiée des formations
+  // Exemple avec FormationService
+  this.formationService.getFormationsForSelection().subscribe({
+    next: (res) => {
+      this.formations = res.data || [];
+    }
+  });
+}
 
   onFileSelected(event: Event): void {
     const input = event.target as HTMLInputElement;

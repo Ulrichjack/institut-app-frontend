@@ -1,20 +1,107 @@
-<div class="modal-backdrop" (click)="onClose()"></div>
-<div class="gallery-modal">
-  <button class="close-btn" (click)="onClose()" aria-label="Fermer">&times;</button>
-  <div class="modal-content">
-    <div class="image-area">
-      <img *ngIf="currentImage" [src]="currentImage.url" [alt]="currentImage.titre">
-      <div class="caption">
-        <h3>{{ currentImage?.titre }}</h3>
-        <p>{{ currentImage?.description }}</p>
+<!-- Modal Overlay -->
+<div class="modal-overlay"
+     *ngIf="isVisible"
+     (click)="closeModal()">
+
+  <!-- Modal Content -->
+  <div class="modal-content"
+       (click)="$event.stopPropagation()">
+
+    <!-- Header avec boutons de contrôle -->
+    <div class="modal-header">
+      <div class="modal-controls">
+        <span class="image-counter">
+          {{ currentIndex + 1 }} / {{ images.length }}
+        </span>
+        <button class="modal-btn close-btn"
+                (click)="closeModal()"
+                title="Fermer (Echap)"
+                type="button">
+          <i class="fas fa-times"></i>
+        </button>
       </div>
-      <div class="nav-area">
-        <button class="nav-btn" (click)="prevImage()" [disabled]="currentIndex === 0">
-          &#8592; Précédente
-        </button>
-        <button class="nav-btn" (click)="nextImage()" [disabled]="currentIndex === images.length - 1">
-          Suivante &#8594;
-        </button>
+    </div>
+
+    <!-- Navigation précédent -->
+    <button class="nav-btn nav-prev"
+            *ngIf="images.length > 1"
+            (click)="previousImage()"
+            [disabled]="currentIndex === 0"
+            title="Image précédente (←)"
+            type="button">
+      <i class="fas fa-chevron-left"></i>
+    </button>
+
+    <!-- Navigation suivant -->
+    <button class="nav-btn nav-next"
+            *ngIf="images.length > 1"
+            (click)="nextImage()"
+            [disabled]="currentIndex === images.length - 1"
+            title="Image suivante (→)"
+            type="button">
+      <i class="fas fa-chevron-right"></i>
+    </button>
+
+    <!-- Zone d'affichage de l'image -->
+    <div class="image-container">
+      <div class="image-wrapper" *ngIf="currentImage">
+        <!-- Loading spinner -->
+        <div class="image-loading" *ngIf="isImageLoading">
+          <div class="loading-spinner"></div>
+          <span>Chargement...</span>
+        </div>
+
+        <!-- Image principale -->
+        <img [src]="currentImage.url"
+             [alt]="currentImage.titre"
+             class="modal-image"
+             [class.loaded]="!isImageLoading"
+             (load)="onImageLoad()"
+             (error)="onImageError()">
+
+        <!-- Badge événement -->
+        <div class="event-badge" *ngIf="isEventImage(currentImage)">
+          <i class="fas fa-calendar"></i>
+          Événement
+        </div>
+      </div>
+    </div>
+
+    <!-- Informations de l'image -->
+    <div class="image-info" *ngIf="currentImage">
+      <div class="image-details">
+        <h3 class="image-title">{{ currentImage.titre }}</h3>
+        <p class="image-description" *ngIf="currentImage.description">
+          {{ currentImage.description }}
+        </p>
+
+        <!-- Métadonnées -->
+        <div class="image-metadata">
+          <div class="meta-item" *ngIf="currentImage.categorie">
+            <i class="fas fa-tag"></i>
+            <span>{{ getCategoryLabel(currentImage.categorie) }}</span>
+          </div>
+          <div class="meta-item" *ngIf="currentImage.dateCreation">
+            <i class="fas fa-calendar-alt"></i>
+            <span>{{ formatDate(currentImage.dateCreation) }}</span>
+          </div>
+        </div>
+      </div>
+
+     
+    </div>
+
+    <!-- Miniatures de navigation -->
+    <div class="thumbnails-container" *ngIf="images.length > 1">
+      <div class="thumbnails-wrapper">
+        <div class="thumbnail"
+             *ngFor="let img of images; let i = index"
+             [class.active]="i === currentIndex"
+             (click)="goToImage(i)"
+             [title]="img.titre">
+          <img [src]="img.url" [alt]="img.titre" loading="lazy">
+          <div class="thumbnail-overlay"></div>
+        </div>
       </div>
     </div>
   </div>

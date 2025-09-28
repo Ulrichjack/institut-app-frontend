@@ -4,7 +4,6 @@ import { Component, Input } from '@angular/core';
 export interface ArgumentInfo {
   title: string;
   description: string;
-  icon?: string; // optionnel, si tu veux une icône
 }
 
 @Component({
