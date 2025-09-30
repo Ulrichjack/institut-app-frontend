@@ -7,6 +7,20 @@ import { FormationListDto } from '../dtos/formation-list-dto.model';
 import { FormationDetailDto } from '../dtos/formation-detail-dto.model';
 import { ApiResponse } from '../dtos/api-response.model';
 import { FormationSimpleDto } from '../dtos/formationSimpleDto';
+import { FormationAdminDto } from '../dtos/FormationAdminDto';
+import { FormationUpdateDto } from '../dtos/FormationUpdateDto';
+
+// Interface pour la pagination Spring
+export interface PageResponse<T> {
+  content: T[];
+  totalPages: number;
+  totalElements: number;
+  size: number;
+  number: number;
+  first?: boolean;
+  last?: boolean;
+  empty?: boolean;
+}
 
 @Injectable({
   providedIn: 'root'
@@ -15,51 +29,83 @@ export class FormationService {
 
   private readonly apiBaseUrl = environment.apiUrl;
   private readonly http = inject(HttpClient);
+
   constructor() { }
 
- createFormation(formationData: FormationCreateDto, adminCreateur: string): Observable<ApiResponse<FormationDetailDto>> {
-  return this.http.post<ApiResponse<FormationDetailDto>>(
-    `${this.apiBaseUrl}/formations`, // <-- CORRECT ENDPOINT
-    formationData,
-    { headers: { 'X-Admin-User': adminCreateur } }
-  );
-}
+  createFormation(formationData: FormationCreateDto, adminCreateur: string): Observable<ApiResponse<FormationDetailDto>> {
+    return this.http.post<ApiResponse<FormationDetailDto>>(
+      `${this.apiBaseUrl}/formations`,
+      formationData,
+      { headers: { 'X-Admin-User': adminCreateur } }
+    );
+  }
 
-    getFormationsList(page: number = 0, size: number = 10, sortBy: string = 'dateCreation', sortOrder: string = 'desc'): Observable<ApiResponse<FormationListDto[]>> {
+  // ✅ CORRIGÉ - Retourne PageResponse au lieu de tableau
+  getFormationsList(page: number = 0, size: number = 10, sortBy: string = 'dateCreation', sortOrder: string = 'desc'): Observable<ApiResponse<PageResponse<FormationListDto>>> {
     let params = new HttpParams()
       .set('page', page.toString())
       .set('size', size.toString())
       .set('sortBy', sortBy)
       .set('sortOrder', sortOrder);
 
-    return this.http.get<ApiResponse<FormationListDto[]>>(`${this.apiBaseUrl}/formations`, { params });
+    return this.http.get<ApiResponse<PageResponse<FormationListDto>>>(`${this.apiBaseUrl}/formations`, { params });
   }
 
-   getFormationDetails(slug: string): Observable<FormationDetailDto> {
+  getFormationDetails(slug: string): Observable<FormationDetailDto> {
     return this.http.get<FormationDetailDto>(`${this.apiBaseUrl}/formations/details/${slug}`);
   }
 
-searchFormations(q: string, page: number = 0, size: number = 12): Observable<ApiResponse<any>> {
-  let params = new HttpParams()
-    .set('q', q || '')
-    .set('page', page.toString())
-    .set('size', size.toString());
+  // ✅ CORRIGÉ - Retourne PageResponse au lieu de any
+  searchFormations(q: string, page: number = 0, size: number = 12): Observable<ApiResponse<PageResponse<FormationListDto>>> {
+    let params = new HttpParams()
+      .set('q', q || '')
+      .set('page', page.toString())
+      .set('size', size.toString());
 
-  // CORRECTION : Utiliser l'URL complète avec apiBaseUrl
-  return this.http.get<ApiResponse<any>>(`${this.apiBaseUrl}/formations/search`, { params });
-}
+    return this.http.get<ApiResponse<PageResponse<FormationListDto>>>(`${this.apiBaseUrl}/formations/search`, { params });
+  }
 
-getFormationDetailBySlug(slug: string) {
-  return this.http.get<ApiResponse<any>>(`${this.apiBaseUrl}/formations/slug/${slug}`);
-}
+  // ✅ CORRIGÉ - Retourne FormationDetailDto au lieu de any
+  getFormationDetailBySlug(slug: string): Observable<ApiResponse<FormationDetailDto>> {
+    return this.http.get<ApiResponse<FormationDetailDto>>(`${this.apiBaseUrl}/formations/slug/${slug}`);
+  }
 
+  // ✅ OK - Pas de pagination ici, retourne un tableau simple
+  getFormationsForSelection(): Observable<ApiResponse<FormationSimpleDto[]>> {
+    return this.http.get<ApiResponse<FormationSimpleDto[]>>(
+      `${this.apiBaseUrl}/formations/selection`
+    );
+  }
 
-getFormationsForSelection(): Observable<ApiResponse<FormationSimpleDto[]>> {
-  return this.http.get<ApiResponse<FormationSimpleDto[]>>(
-    `${this.apiBaseUrl}/formations/selection`
-  );
-}
+  // ✅ CORRIGÉ - Utilise PageResponse
+  getAdminFormations(page: number = 0, size: number = 20, sortBy: string = 'dateCreation', sortOrder: string = 'desc'): Observable<ApiResponse<PageResponse<FormationAdminDto>>> {
+    let params = new HttpParams()
+      .set('page', page.toString())
+      .set('size', size.toString())
+      .set('sortBy', sortBy)
+      .set('sortDir', sortOrder);
 
+    return this.http.get<ApiResponse<PageResponse<FormationAdminDto>>>(
+      `${this.apiBaseUrl}/formations/admin`, { params }
+    );
+  }
 
+  // ✅ CORRIGÉ - Retourne FormationDetailDto au lieu de any
+  getFormationById(id: number): Observable<ApiResponse<FormationDetailDto>> {
+    return this.http.get<ApiResponse<FormationDetailDto>>(`${this.apiBaseUrl}/formations/${id}`);
+  }
 
+  // ✅ CORRIGÉ - Retourne FormationDetailDto au lieu de any
+  updateFormation(id: number, updateData: FormationUpdateDto, adminModificateur: string): Observable<ApiResponse<FormationDetailDto>> {
+    return this.http.put<ApiResponse<FormationDetailDto>>(
+      `${this.apiBaseUrl}/formations/${id}`,
+      updateData,
+      { headers: { 'X-Admin-User': adminModificateur } }
+    );
+  }
+
+  // ✅ CORRIGÉ - Retourne ApiResponse au lieu de Observable vide
+  deleteFormation(id: number): Observable<ApiResponse<void>> {
+    return this.http.delete<ApiResponse<void>>(`${this.apiBaseUrl}/formations/${id}`);
+  }
 }

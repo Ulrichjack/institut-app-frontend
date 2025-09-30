@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
 import { GalleryService } from '../../shared/services/gallery.service';
 import { FormationService } from '../../shared/services/formation.service';
 
@@ -18,15 +19,30 @@ export class GalleryImageCreationComponent implements OnInit {
   formations: { id: number, nom: string }[] = [];
 
   selectedFile: File | null = null;
-  imagePreview: string | null = null; // Aperçu local
+  imagePreview: string | null = null;
+  currentImageUrl: string | null = null; // URL de l'image existante
+
+  isEditMode: boolean = false;
+  editId: number | null = null;
 
   private readonly fb = inject(FormBuilder);
   private readonly galleryService = inject(GalleryService);
   private readonly formationService = inject(FormationService);
+  private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
 
   ngOnInit(): void {
     this.initForm();
     this.loadFormations();
+
+    this.route.paramMap.subscribe(params => {
+      const idParam = params.get('id');
+      if (idParam) {
+        this.isEditMode = true;
+        this.editId = +idParam;
+        this.loadImageForEdit(this.editId);
+      }
+    });
   }
 
   private initForm(): void {
@@ -40,21 +56,42 @@ export class GalleryImageCreationComponent implements OnInit {
   }
 
   loadFormations(): void {
-  // Appelle ton service qui retourne la liste simplifiée des formations
-  // Exemple avec FormationService
-  this.formationService.getFormationsForSelection().subscribe({
-    next: (res) => {
-      this.formations = res.data || [];
-    }
-  });
-}
+    this.formationService.getFormationsForSelection().subscribe({
+      next: (res) => {
+        this.formations = res.data || [];
+      }
+    });
+  }
+
+  loadImageForEdit(id: number): void {
+    this.isLoading = true;
+    // Utilisation de getImageById au lieu de getImagesPaged
+    this.galleryService.getImageById(id).subscribe({
+      next: (img) => {
+        this.imageForm.patchValue({
+          titre: img.titre,
+          description: img.description,
+          categorie: img.categorie,
+          isPublic: img.isPublic,
+          formationId: img.formation?.id ?? null
+        });
+        // Stocker l'URL actuelle et l'afficher en aperçu
+        this.currentImageUrl = img.url;
+        this.imagePreview = img.url;
+        this.isLoading = false;
+      },
+      error: () => {
+        this.errorMessage = "Impossible de charger l'image à modifier.";
+        this.isLoading = false;
+      }
+    });
+  }
 
   onFileSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files[0]) {
       this.selectedFile = input.files[0];
 
-      // Aperçu local seulement
       const reader = new FileReader();
       reader.onload = () => {
         this.imagePreview = reader.result as string;
@@ -64,9 +101,9 @@ export class GalleryImageCreationComponent implements OnInit {
   }
 
   async onSubmit(): Promise<void> {
-    if (this.imageForm.invalid || !this.selectedFile) {
+    if (this.imageForm.invalid) {
       this.imageForm.markAllAsTouched();
-      this.errorMessage = 'Complète tous les champs et sélectionne une image.';
+      this.errorMessage = 'Complète tous les champs.';
       return;
     }
 
@@ -74,16 +111,52 @@ export class GalleryImageCreationComponent implements OnInit {
     this.successMessage = null;
     this.errorMessage = null;
 
-    try {
-      // 1. Upload sur Cloudinary (seulement maintenant)
-    const { url, filename } = await this.uploadToCloudinary(this.selectedFile);
+    let url = this.currentImageUrl || ''; // Utiliser l'URL existante par défaut
+    let filename = '';
+
+    // Uploader uniquement si un nouveau fichier a été sélectionné
+    if (this.selectedFile) {
+      try {
+        const upload = await this.uploadToCloudinary(this.selectedFile);
+        url = upload.url;
+        filename = upload.filename;
+      } catch (error) {
+        this.isLoading = false;
+        this.errorMessage = 'Erreur lors de l\'upload de l\'image.';
+        return;
+      }
+    }
+
     const payload = {
       ...this.imageForm.value,
-     url,
-     filename
-   };
+      url,
+      filename
+    };
 
-      // 3. Envoyer au backend
+    if (this.isEditMode && this.editId) {
+      this.galleryService.updateImage(this.editId, payload).subscribe({
+        next: () => {
+          this.isLoading = false;
+          this.successMessage = 'Image modifiée avec succès !';
+          // Rediriger vers la liste après 2 secondes
+          setTimeout(() => {
+            this.router.navigate(['/admin/gallery-list']);
+          }, 2000);
+        },
+        error: (err) => {
+          this.isLoading = false;
+          this.errorMessage = 'Erreur lors de la modification: ' + (err.error?.message || 'Erreur serveur');
+          console.error('Erreur modification:', err);
+        }
+      });
+    } else {
+      // Mode création - vérifier qu'un fichier est sélectionné
+      if (!this.selectedFile) {
+        this.isLoading = false;
+        this.errorMessage = 'Veuillez sélectionner une image.';
+        return;
+      }
+
       this.galleryService.addImage(payload).subscribe({
         next: () => {
           this.isLoading = false;
@@ -91,27 +164,32 @@ export class GalleryImageCreationComponent implements OnInit {
           this.imageForm.reset({ isPublic: true, categorie: 'EVENEMENT', formationId: null });
           this.selectedFile = null;
           this.imagePreview = null;
+          this.currentImageUrl = null;
         },
-        error: () => {
+        error: (err) => {
           this.isLoading = false;
-          this.errorMessage = 'Erreur lors de la création côté serveur.';
+          this.errorMessage = 'Erreur lors de la création: ' + (err.error?.message || 'Erreur serveur');
+          console.error('Erreur création:', err);
         }
       });
-    } catch (err) {
-      this.isLoading = false;
-      this.errorMessage = "Erreur lors de l'upload sur Cloudinary.";
     }
   }
 
   async uploadToCloudinary(file: File): Promise<{url: string, filename: string}> {
-  const formData = new FormData();
-  formData.append('file', file);
-  formData.append('upload_preset', 'institue');
-  const res = await fetch('https://api.cloudinary.com/v1_1/dfurjzy3b/image/upload', {
-    method: 'POST',
-    body: formData
-  });
-  const data = await res.json();
-  return { url: data.secure_url, filename: data.public_id }; // public_id est le nom Cloudinary
-}
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('upload_preset', 'institue');
+
+    const res = await fetch('https://api.cloudinary.com/v1_1/dfurjzy3b/image/upload', {
+      method: 'POST',
+      body: formData
+    });
+
+    if (!res.ok) {
+      throw new Error('Erreur upload Cloudinary');
+    }
+
+    const data = await res.json();
+    return { url: data.secure_url, filename: data.public_id };
+  }
 }

@@ -1,0 +1,61 @@
+<div class="admin-gallery-container">
+  <h2 class="gallery-title">Gestion des images galerie</h2>
+  <button class="btn btn-success mb-3" (click)="createImage()">
+    <i class="bi bi-plus-circle"></i> Ajouter une image
+  </button>
+
+  <div *ngIf="isLoading" class="loading-section">Chargement...</div>
+  <div *ngIf="errorMessage" class="text-danger">{{ errorMessage }}</div>
+
+  <div class="table-responsive" *ngIf="!isLoading && images.length > 0">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Image</th>
+          <th>Titre</th>
+          <th>Description</th>
+          <th>Catégorie</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (img of images; track $index) {
+          <tr>
+            <td>
+              <img [src]="img.url" alt="galerie" class="gallery-thumb" style="width:60px; height:60px; object-fit:cover; border-radius:6px;">
+            </td>
+            <td>{{ img.titre }}</td>
+            <td>{{ img.description }}</td>
+            <td>{{ img.categorie }}</td>
+            <td>
+              @if (!img.formationId) {
+                <button class="btn btn-sm btn-primary me-2" (click)="editImage(img)">
+                  <i class="bi bi-pencil"></i> Modifier
+                </button>
+              }
+              @if (img.formationId) {
+                <span class="badge badge-warning text-dark px-2 py-1">Impossible de modifier (liée à une formation)</span>
+              }
+              <button class="btn btn-sm btn-danger" (click)="deleteImage(img)">
+                <i class="bi bi-trash"></i> Supprimer
+              </button>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+
+  @if (totalPages > 1) {
+    <div class="pagination-section">
+      <button class="btn btn-light" [disabled]="pageNumber === 0" (click)="goToPage(pageNumber-1)">
+        Précédent
+      </button>
+      <span class="mx-2">Page {{ pageNumber+1 }} / {{ totalPages }}</span>
+      <button class="btn btn-light" [disabled]="pageNumber === totalPages-1" (click)="goToPage(pageNumber+1)">
+        Suivant
+      </button>
+      <span class="total-elements">({{ totalElements }} images)</span>
+    </div>
+  }
+</div>

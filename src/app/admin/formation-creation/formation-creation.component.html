@@ -5,20 +5,23 @@
       <div class="row justify-content-center">
         <div class="col-lg-10">
           <h1 class="page-title">
-            <i class="bi bi-plus-circle-fill"></i>
-            Créer une nouvelle formation
+            <i [ngClass]="isEditMode ? 'bi bi-pencil-square' : 'bi bi-plus-circle-fill'"></i>
+            {{ isEditMode ? 'Modifier une formation' : 'Créer une nouvelle formation' }}
           </h1>
-
           <!-- Messages de statut -->
           <div class="status-messages">
-            <div *ngIf="successMessage" class="alert alert-success alert-modern" role="alert">
-              <i class="bi bi-check-circle-fill"></i>
-              {{ successMessage }}
-            </div>
-            <div *ngIf="errorMessage" class="alert alert-danger alert-modern" role="alert">
-              <i class="bi bi-exclamation-triangle-fill"></i>
-              {{ errorMessage }}
-            </div>
+            @if (successMessage) {
+              <div class="alert alert-success alert-modern" role="alert">
+                <i class="bi bi-check-circle-fill"></i>
+                {{ successMessage }}
+              </div>
+            }
+            @if (errorMessage) {
+              <div class="alert alert-danger alert-modern" role="alert">
+                <i class="bi bi-exclamation-triangle-fill"></i>
+                {{ errorMessage }}
+              </div>
+            }
           </div>
         </div>
       </div>
@@ -53,25 +56,28 @@
                                (change)="onFileSelected($event)"
                                accept="image/*"
                                class="file-input">
-
-                        <div *ngIf="!imagePreview && !isImageUploading" class="upload-placeholder">
-                          <i class="bi bi-cloud-upload"></i>
-                          <span>Cliquez pour choisir une image</span>
-                          <small>PNG, JPG jusqu'à 5MB</small>
-                        </div>
-
-                        <div *ngIf="isImageUploading" class="upload-loading">
-                          <div class="spinner"></div>
-                          <span>Upload en cours...</span>
-                        </div>
-
-                        <div *ngIf="imagePreview" class="image-preview">
-                          <img [src]="imagePreview" alt="Aperçu formation">
-                          <div class="image-overlay">
-                            <i class="bi bi-pencil"></i>
-                            <span>Changer l'image</span>
+                        @if (!imagePreview && !isImageUploading) {
+                          <div class="upload-placeholder">
+                            <i class="bi bi-cloud-upload"></i>
+                            <span>Cliquez pour choisir une image</span>
+                            <small>PNG, JPG jusqu'à 5MB</small>
                           </div>
-                        </div>
+                        }
+                        @if (isImageUploading) {
+                          <div class="upload-loading">
+                            <div class="spinner"></div>
+                            <span>Upload en cours...</span>
+                          </div>
+                        }
+                        @if (imagePreview) {
+                          <div class="image-preview">
+                            <img [src]="imagePreview" alt="Aperçu formation">
+                            <div class="image-overlay">
+                              <i class="bi bi-pencil"></i>
+                              <span>Changer l'image</span>
+                            </div>
+                          </div>
+                        }
                       </div>
                     </label>
                   </div>
@@ -87,7 +93,6 @@
                                accept="image/*"
                                class="file-input"
                                multiple>
-
                         <div class="upload-placeholder small">
                           <i class="bi bi-collection"></i>
                           <span>Ajouter des images</span>
@@ -95,21 +100,23 @@
                         </div>
                       </div>
                     </label>
-
-                    <!-- Aperçu galerie -->
-                    <div *ngIf="galleryImagePreviews.length > 0" class="gallery-preview">
-                      <div class="gallery-grid">
-                        <div *ngFor="let img of galleryImagePreviews; let i = index" class="gallery-item">
-                          <img [src]="img" alt="Galerie {{i+1}}">
-                          <button type="button"
-                                  class="remove-btn"
-                                  (click)="removeGalleryImage(i)"
-                                  title="Supprimer">
-                            <i class="bi bi-x"></i>
-                          </button>
+                    @if (galleryImagePreviews.length > 0) {
+                      <div class="gallery-preview">
+                        <div class="gallery-grid">
+                         @for (img of galleryImagePreviews; track $index) {
+  <div class="gallery-item">
+    <img [src]="img" alt="Galerie {{$index + 1}}">
+    <button type="button"
+            class="remove-btn"
+            (click)="removeGalleryImage($index)"
+            title="Supprimer">
+      <i class="bi bi-x"></i>
+    </button>
+  </div>
+}
                         </div>
                       </div>
-                    </div>
+                    }
                   </div>
                 </div>
               </div>
@@ -125,7 +132,6 @@
                         <i class="bi bi-info-circle"></i>
                         Informations essentielles
                       </h4>
-
                       <div class="form-grid">
                         <div class="form-field full-width">
                           <label for="nom" class="field-label">
@@ -141,7 +147,6 @@
                             Le nom de la formation est obligatoire (min 3 caractères).
                           </div>
                         </div>
-
                         <div class="form-field full-width">
                           <label for="description" class="field-label">
                             Description <span class="required">*</span>
@@ -156,7 +161,6 @@
                             La description est obligatoire (min 10 caractères).
                           </div>
                         </div>
-
                         <div class="form-field">
                           <label for="duree" class="field-label">
                             Durée <span class="required">*</span>
@@ -168,7 +172,6 @@
                                  [class.is-invalid]="isFieldInvalid('duree')"
                                  placeholder="Ex: 3 mois">
                         </div>
-
                         <div class="form-field">
                           <label for="categorie" class="field-label">
                             Catégorie <span class="required">*</span>
@@ -180,7 +183,6 @@
                                  [class.is-invalid]="isFieldInvalid('categorie')"
                                  placeholder="Ex: Informatique">
                         </div>
-
                         <div class="form-field">
                           <label for="fraisInscription" class="field-label">
                             Frais d'inscription (FCFA) <span class="required">*</span>
@@ -195,7 +197,6 @@
                             <span class="input-group-text">FCFA</span>
                           </div>
                         </div>
-
                         <div class="form-field">
                           <label for="prix" class="field-label">
                             Prix (FCFA) <span class="required">*</span>
@@ -213,8 +214,6 @@
                       </div>
                     </div>
 
-                    <!-- Sections accordéons -->
-
                     <!-- Options avancées -->
                     <div class="accordion-section">
                       <button type="button"
@@ -226,7 +225,6 @@
                         <i class="bi bi-chevron-down toggle-icon"
                            [class.rotated]="activeSection === 'advanced'"></i>
                       </button>
-
                       <div class="accordion-content" [class.show]="activeSection === 'advanced'">
                         <div class="form-grid">
                           <div class="form-field full-width">
@@ -240,16 +238,16 @@
                               </label>
                             </div>
                           </div>
-
-                          <div *ngIf="formationForm.get('certificatDelivre')?.value" class="form-field full-width">
-                            <label for="nomCertificat" class="field-label">Nom du Certificat</label>
-                            <input type="text"
-                                   id="nomCertificat"
-                                   formControlName="nomCertificat"
-                                   class="form-control modern-input"
-                                   placeholder="Certificat de réussite en...">
-                          </div>
-
+                          @if (formationForm.get('certificatDelivre')?.value) {
+                            <div class="form-field full-width">
+                              <label for="nomCertificat" class="field-label">Nom du Certificat</label>
+                              <input type="text"
+                                     id="nomCertificat"
+                                     formControlName="nomCertificat"
+                                     class="form-control modern-input"
+                                     placeholder="Certificat de réussite en...">
+                            </div>
+                          }
                           <div class="form-field full-width">
                             <label for="programme" class="field-label">Programme</label>
                             <textarea id="programme"
@@ -258,7 +256,6 @@
                                      rows="2"
                                      placeholder="Détaillez le programme de formation..."></textarea>
                           </div>
-
                           <div class="form-field full-width">
                             <label for="objectifs" class="field-label">Objectifs</label>
                             <textarea id="objectifs"
@@ -267,7 +264,6 @@
                                      rows="2"
                                      placeholder="Quels sont les objectifs pédagogiques ?"></textarea>
                           </div>
-
                           <div class="form-field full-width">
                             <label for="materielFourni" class="field-label">Matériel fourni</label>
                             <textarea id="materielFourni"
@@ -276,7 +272,6 @@
                                      rows="2"
                                      placeholder="Listez le matériel fourni aux apprenants..."></textarea>
                           </div>
-
                           <div class="form-field">
                             <label for="horaires" class="field-label">Horaires</label>
                             <input type="text"
@@ -285,7 +280,6 @@
                                    class="form-control modern-input"
                                    placeholder="Ex: 9h-17h">
                           </div>
-
                           <div class="form-field">
                             <label for="frequence" class="field-label">Fréquence</label>
                             <input type="text"
@@ -294,7 +288,6 @@
                                    class="form-control modern-input"
                                    placeholder="Ex: 3 fois par semaine">
                           </div>
-
                           <div class="form-field">
                             <label for="nombrePlaces" class="field-label">Nombre de places</label>
                             <input type="number"
@@ -303,7 +296,6 @@
                                    class="form-control modern-input"
                                    [class.is-invalid]="isFieldInvalid('nombrePlaces')">
                           </div>
-
                           <div class="form-field">
                             <label for="nombreInscritsAffiche" class="field-label">Inscrits affichés</label>
                             <input type="number"
@@ -313,7 +305,6 @@
                                    [class.is-invalid]="isFieldInvalid('nombreInscritsAffiche')">
                             <small class="form-text text-muted">Pour le social proof</small>
                           </div>
-
                           <div class="form-field full-width">
                             <div class="form-check-modern">
                               <input class="form-check-input"
@@ -340,7 +331,6 @@
                         <i class="bi bi-chevron-down toggle-icon"
                            [class.rotated]="activeSection === 'media'"></i>
                       </button>
-
                       <div class="accordion-content" [class.show]="activeSection === 'media'">
                         <div class="form-grid">
                           <div class="form-field full-width">
@@ -354,34 +344,33 @@
                               </label>
                             </div>
                           </div>
-
-                          <div *ngIf="formationForm.get('enPromotion')?.value" class="promotion-fields">
-                            <div class="form-field">
-                              <label for="pourcentageReduction" class="field-label">Réduction (%)</label>
-                              <input type="number"
-                                     id="pourcentageReduction"
-                                     formControlName="pourcentageReduction"
-                                     class="form-control modern-input"
-                                     [class.is-invalid]="isFieldInvalid('pourcentageReduction')"
-                                     min="0" max="100">
+                          @if (formationForm.get('enPromotion')?.value) {
+                            <div class="promotion-fields">
+                              <div class="form-field">
+                                <label for="pourcentageReduction" class="field-label">Réduction (%)</label>
+                                <input type="number"
+                                       id="pourcentageReduction"
+                                       formControlName="pourcentageReduction"
+                                       class="form-control modern-input"
+                                       [class.is-invalid]="isFieldInvalid('pourcentageReduction')"
+                                       min="0" max="100">
+                              </div>
+                              <div class="form-field">
+                                <label for="dateDebutPromo" class="field-label">Début promo</label>
+                                <input type="datetime-local"
+                                       id="dateDebutPromo"
+                                       formControlName="dateDebutPromo"
+                                       class="form-control modern-input">
+                              </div>
+                              <div class="form-field">
+                                <label for="dateFinPromo" class="field-label">Fin promo</label>
+                                <input type="datetime-local"
+                                       id="dateFinPromo"
+                                       formControlName="dateFinPromo"
+                                       class="form-control modern-input">
+                              </div>
                             </div>
-
-                            <div class="form-field">
-                              <label for="dateDebutPromo" class="field-label">Début promo</label>
-                              <input type="datetime-local"
-                                     id="dateDebutPromo"
-                                     formControlName="dateDebutPromo"
-                                     class="form-control modern-input">
-                            </div>
-
-                            <div class="form-field">
-                              <label for="dateFinPromo" class="field-label">Fin promo</label>
-                              <input type="datetime-local"
-                                     id="dateFinPromo"
-                                     formControlName="dateFinPromo"
-                                     class="form-control modern-input">
-                            </div>
-                          </div>
+                          }
                         </div>
                       </div>
                     </div>
@@ -397,7 +386,6 @@
                         <i class="bi bi-chevron-down toggle-icon"
                            [class.rotated]="activeSection === 'seo'"></i>
                       </button>
-
                       <div class="accordion-content" [class.show]="activeSection === 'seo'">
                         <div class="form-grid">
                           <div class="form-field full-width">
@@ -408,7 +396,6 @@
                                    class="form-control modern-input"
                                    placeholder="Titre pour les moteurs de recherche">
                           </div>
-
                           <div class="form-field full-width">
                             <label for="metaDescription" class="field-label">Meta Description</label>
                             <textarea id="metaDescription"
@@ -429,12 +416,12 @@
                               [class.loading]="isLoading">
                         <div class="btn-content">
                           <span *ngIf="!isLoading" class="btn-text">
-                            <i class="bi bi-plus-circle"></i>
-                            Créer la formation
+                            <i [ngClass]="isEditMode ? 'bi bi-pencil' : 'bi bi-plus-circle'"></i>
+                            {{ isEditMode ? 'Enregistrer les modifications' : 'Créer la formation' }}
                           </span>
                           <span *ngIf="isLoading" class="btn-text loading">
                             <div class="spinner-sm"></div>
-                            Création en cours...
+                            {{ isEditMode ? 'Modification en cours...' : 'Création en cours...' }}
                           </span>
                         </div>
                         <div class="btn-bg"></div>

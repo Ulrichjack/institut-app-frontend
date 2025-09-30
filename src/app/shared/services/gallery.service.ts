@@ -43,6 +43,11 @@ export class GalleryService {
     return this.http.get<GalleryImage[]>(`${this.apiBaseUrl}/gallery/home-images`);
   }
 
+  // NOUVEAU: Récupérer une image par son ID
+  getImageById(id: number): Observable<GalleryImage> {
+    return this.http.get<GalleryImage>(`${this.apiBaseUrl}/gallery/${id}`);
+  }
+
   // Récupérer une page d'images (pagination)
   getImagesPaged(page: number, size: number): Observable<GalleryPageResponse> {
     const params = new HttpParams()
@@ -67,7 +72,7 @@ export class GalleryService {
     return this.http.get<GalleryPageResponse>(`${this.apiBaseUrl}/gallery/by-formation-nom-paged`, { params });
   }
 
-  // NOUVEAU: Filtrage par catégorie
+  // Filtrage par catégorie
   getImagesByCategory(category: string, page: number = 0, size: number = 12): Observable<GalleryPageResponse> {
     const params = new HttpParams()
       .set('category', category)

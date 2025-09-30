@@ -120,15 +120,15 @@ export class GalleryHomeComponent implements OnInit, OnDestroy, AfterViewInit {
   argumentsList: ArgumentInfo[] = [
     {
     title: 'Transformez votre passion en expertise recherchée',
-    description: `Maîtrisez l'art de la coiffure, de l'esthétique, du maquillage, de l'onglerie ou de la cosmétique. Nos formations sont conçues pour vous donner les compétences professionnelles et révéler le talent unique qui sommeille en vous.`
+    description: `Maîtrisez l'art de la coiffure, de l'esthétique, du maquillage, de l'onglerie ou de la cosmétique. Nos formations sont conçues pour vous transmettre les compétences professionnelles et révéler le talent unique qui sommeille en vous.`
   },
   {
     title: 'Programmes sur-mesure pour votre réussite',
-    description: 'Composez votre parcours : formation ciblée ou pack complet, avec des modules adaptés à vos ambitions. Multipliez les compétences, multipliez les opportunités !'
+    description: 'Créer votre parcours : formation ciblée ou pack complet, avec des modules adaptés à vos ambitions. Multipliez les compétences, multipliez les opportunités !'
   },
   {
     title: 'Des stages, du concret, du réseau',
-    description: 'Plongez au cœur du métier : nos cursus incluent des stages auprès de professionnels, pour apprendre sur le terrain et tisser votre réseau.'
+    description: 'Plongez au cœur du métier : nos cursus incluent des stages auprès de professionnels, pour apprendre sur le terrain et développer votre réseau.'
   },
   {
     title: 'Investissez sans stress, payez en plusieurs fois',

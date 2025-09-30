@@ -6,31 +6,42 @@
           <!-- Image et upload à gauche -->
           <div class="col-md-5 d-flex flex-column align-items-center justify-content-center bg-light py-5">
             <div class="image-upload-box mb-3 w-100">
-              <label for="imageFile" class="form-label mb-2 fw-bold">Image pour la galerie</label>
+              <label for="imageFile" class="form-label mb-2 fw-bold">
+                Image pour la galerie
+              </label>
               <input type="file" id="imageFile" (change)="onFileSelected($event)" accept="image/*" class="form-control">
             </div>
 
-            <!-- Sinon, aperçu local -->
-            <div *ngIf="imagePreview" class="image-preview-box mt-3">
-              <img [src]="imagePreview" alt="Aperçu local" class="img-fluid rounded shadow" style="max-width: 320px; max-height: 320px; object-fit: cover;">
-              <div class="mt-2 text-secondary"><i class="bi bi-eye"></i> </div>
-            </div>
-            <!-- Placeholder si rien -->
-            <div *ngIf=" !imagePreview" class="image-preview-placeholder text-muted mt-3">
-              <span class="d-block mb-2"><i class="bi bi-image" style="font-size: 3rem;"></i></span>
-              <span>Aucune image sélectionnée</span>
-            </div>
+            <!-- Aperçu local -->
+            @if (imagePreview) {
+              <div class="image-preview-box mt-3">
+                <img [src]="imagePreview" alt="Aperçu local" class="img-fluid rounded shadow" style="max-width: 320px; max-height: 320px; object-fit: cover;">
+                <div class="mt-2 text-secondary"><i class="bi bi-eye"></i></div>
+              </div>
+            }
+            @if (!imagePreview) {
+              <div class="image-preview-placeholder text-muted mt-3">
+                <span class="d-block mb-2"><i class="bi bi-image" style="font-size: 3rem;"></i></span>
+                <span>Aucune image sélectionnée</span>
+              </div>
+            }
           </div>
           <!-- Formulaire à droite -->
           <div class="col-md-7">
             <div class="card-body p-4">
-              <h2 class="fw-bold text-center mb-4">Ajouter une image à la galerie</h2>
-              <div *ngIf="successMessage" class="alert alert-success" role="alert">
-                {{ successMessage }}
-              </div>
-              <div *ngIf="errorMessage" class="alert alert-danger" role="alert">
-                {{ errorMessage }}
-              </div>
+              <h2 class="fw-bold text-center mb-4">
+                {{ isEditMode ? 'Modifier une image de galerie' : 'Ajouter une image à la galerie' }}
+              </h2>
+              @if (successMessage) {
+                <div class="alert alert-success" role="alert">
+                  {{ successMessage }}
+                </div>
+              }
+              @if (errorMessage) {
+                <div class="alert alert-danger" role="alert">
+                  {{ errorMessage }}
+                </div>
+              }
               <form [formGroup]="imageForm" (ngSubmit)="onSubmit()">
                 <div class="mb-3">
                   <label for="titre" class="form-label">Titre <span class="text-danger">*</span></label>
@@ -61,16 +72,22 @@
                 </div>
                 <!-- Optionnel : associer à une formation -->
                 <div class="mb-3">
-  <label for="formationId" class="form-label">Associer à une formation</label>
-  <select id="formationId" formControlName="formationId" class="form-select">
-    <option [value]="null">Aucune</option>
-    <option *ngFor="let f of formations" [value]="f.id">{{ f.nom }}</option>
-  </select>
-</div>
+                  <label for="formationId" class="form-label">Associer à une formation</label>
+                  <select id="formationId" formControlName="formationId" class="form-select">
+                    <option [value]="null">Aucune</option>
+                    @for (f of formations; track f.id) {
+                      <option [value]="f.id">{{ f.nom }}</option>
+                    }
+                  </select>
+                </div>
                 <div class="text-center mt-4">
                   <button type="submit" class="btn btn-primary btn-lg px-5" [disabled]="imageForm.invalid  || isLoading">
-                    <span *ngIf="!isLoading">Ajouter l'image</span>
-                    <span *ngIf="isLoading">Envoi en cours...</span>
+                    <span *ngIf="!isLoading">
+                      {{ isEditMode ? "Enregistrer les modifications" : "Ajouter l'image" }}
+                    </span>
+                    <span *ngIf="isLoading">
+                      {{ isEditMode ? "Modification en cours..." : "Envoi en cours..." }}
+                    </span>
                   </button>
                 </div>
               </form>

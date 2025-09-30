@@ -1,0 +1,102 @@
+<div class="admin-table-container">
+  <h2 class="table-title">Gestion des formations</h2>
+
+  <!-- Barre de recherche -->
+  <div class="search-bar-container mb-3">
+    <form (submit)="onSearchSubmit($event)" class="search-form">
+      <input
+        type="text"
+        [(ngModel)]="searchQuery"
+        name="search"
+        placeholder="Rechercher une formation..."
+        class="search-input"
+        autocomplete="off"
+        (input)="onSearchInput()"
+      />
+      <button
+        *ngIf="searchQuery && searchQuery.length > 0"
+        type="button"
+        class="clear-button"
+        (click)="clearSearch()"
+        aria-label="Vider la recherche">
+        <i class="fas fa-times"></i>
+      </button>
+      <button type="submit" class="search-button">
+        <i class="fas fa-search"></i>
+      </button>
+    </form>
+    <button class="btn btn-secondary ms-2" (click)="toggleShowInactive()">
+      {{ showInactiveOnly ? 'Afficher tous' : 'Afficher uniquement désactivés' }}
+    </button>
+
+    <button class="btn btn-success ms-2" (click)="goToCreation()">
+  <i class="bi bi-plus-circle"></i> Créer une formation
+</button>
+  </div>
+
+
+  <div class="table-responsive">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Nom</th>
+          <th>Catégorie</th>
+          <th>Prix</th>
+          <th>Statut</th>
+          <th>Date création</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let formation of formations"
+            [class.inactive-row]="!formation.active">
+          <td>
+            <div class="formation-name">
+              <img *ngIf="formation.photoPrincipale" [src]="formation.photoPrincipale" alt="Photo" class="formation-img" />
+              {{ formation.nom }}
+            </div>
+          </td>
+          <td>{{ formation.categorie }}</td>
+          <td>
+            <span class="prix-value">{{ formation.prix | number:'1.0-0' }} FCFA</span>
+            <span *ngIf="formation.enPromotion" class="badge badge-promo">Promo</span>
+          </td>
+          <td>
+            <span [class]="formation.active ? 'badge badge-active' : 'badge badge-inactive'">
+              {{ formation.active ? 'Active' : 'Inactive' }}
+            </span>
+            <!-- Bouton réactiver si inactive -->
+            <button *ngIf="!formation.active"
+                    class="btn btn-sm btn-success ms-2"
+                    (click)="reactivateFormation(formation.id)">
+              <i class="bi bi-arrow-repeat"></i> Réactiver
+            </button>
+          </td>
+          <td>{{ formation.dateCreation | date:'short' }}</td>
+          <td>
+            <button class="btn btn-sm btn-primary" (click)="editFormation(formation.id)">
+              <i class="bi bi-pencil"></i> Modifier
+            </button>
+            <button class="btn btn-sm btn-danger" (click)="deleteFormation(formation.id)">
+              <i class="bi bi-trash"></i> Supprimer
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="pagination-section" *ngIf="totalPages > 1">
+    <button class="btn btn-light" [disabled]="pageNumber === 0" (click)="goToPage(pageNumber-1)">
+      Précédent
+    </button>
+    <span class="mx-2">Page {{ pageNumber+1 }} / {{ totalPages }}</span>
+    <button class="btn btn-light" [disabled]="pageNumber === totalPages-1" (click)="goToPage(pageNumber+1)">
+      Suivant
+    </button>
+    <span class="total-elements">({{ totalElements }} formations)</span>
+  </div>
+
+  <div *ngIf="isLoading" class="loading-section">Chargement...</div>
+  <div *ngIf="errorMessage" class="text-danger">{{ errorMessage }}</div>
+</div>
