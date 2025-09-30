@@ -8,7 +8,7 @@ import { NewsletterSubscribeDto } from '../dtos/NewsletterSubscribeDto';
   providedIn: 'root'
 })
 export class MessageService {
-  private readonly apiBaseUrl = environment.apiUrl;
+  private readonly apiBaseUrl = environment.apiUrl + '/api';
   constructor(private http: HttpClient) {}
 
   preInscription(dto: any): Observable<any> {

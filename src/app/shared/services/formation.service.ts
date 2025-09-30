@@ -27,7 +27,7 @@ export interface PageResponse<T> {
 })
 export class FormationService {
 
-  private readonly apiBaseUrl = environment.apiUrl;
+  private readonly apiBaseUrl = environment.apiUrl + '/api';
   private readonly http = inject(HttpClient);
 
   constructor() { }

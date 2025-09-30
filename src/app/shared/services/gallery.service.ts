@@ -33,7 +33,7 @@ export interface GalleryPageResponse {
   providedIn: 'root'
 })
 export class GalleryService {
-  private readonly apiBaseUrl = environment.apiUrl;
+  private readonly apiBaseUrl = environment.apiUrl + '/api';
   private readonly http = inject(HttpClient);
 
   constructor() {}
