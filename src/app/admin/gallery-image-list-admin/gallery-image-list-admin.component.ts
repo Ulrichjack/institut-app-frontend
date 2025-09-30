@@ -8,7 +8,7 @@ import { CommonModule, DatePipe } from '@angular/common';
   templateUrl: './gallery-image-list-admin.component.html',
   styleUrl: './gallery-image-list-admin.component.scss',
   standalone: true,
-  imports: [DatePipe,CommonModule]
+  imports: [CommonModule]
 })
 export class GalleryImageListAdminComponent implements OnInit {
   images: GalleryImage[] = [];
