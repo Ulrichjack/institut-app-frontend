@@ -1,4 +1,12 @@
+// export const environment = {
+//   production: false,
+//   apiUrl: 'http://localhost:8081/api',
+// }
+
+
+// // // // //src/environments/environment.prod.ts
 export const environment = {
-  production: false,
-  apiUrl: 'http://localhost:8081/api',
-}
+  production: true,
+  apiUrl: 'https://institut-app-backend.onrender.com' // <-- URL de votre Back-end sur Render
+};
+
