@@ -12,37 +12,36 @@
       </p>
     </div>
 
-<div class="search-bar-container">
-  <form (submit)="onSearchSubmit($event)" class="search-form">
-    <input
-      type="text"
-      [(ngModel)]="searchQuery"
-      name="search"
-      placeholder="Rechercher une formation..."
-      class="search-input"
-      autocomplete="off"
-      (input)="onSearchInput()"
-    />
-    <!-- Bouton pour vider la recherche -->
-    <button
-      *ngIf="searchQuery && searchQuery.length > 0"
-      type="button"
-      class="clear-button"
-      (click)="clearSearch()"
-      aria-label="Vider la recherche">
-      <i class="fas fa-times"></i>
-    </button>
-    <!-- Bouton de recherche -->
-    <button type="submit" class="search-button">
-      <i class="fas fa-search"></i>
-    </button>
-  </form>
-</div>
+    <!-- Barre de recherche -->
+    <div class="search-bar-container">
+      <form (submit)="onSearchSubmit($event)" class="search-form">
+        <input
+          type="text"
+          [(ngModel)]="searchQuery"
+          name="search"
+          placeholder="Rechercher une formation..."
+          class="search-input"
+          autocomplete="off"
+          (input)="onSearchInput()"
+        />
+        <button
+          *ngIf="searchQuery && searchQuery.length > 0"
+          type="button"
+          class="clear-button"
+          (click)="clearSearch()"
+          aria-label="Vider la recherche">
+          <i class="fas fa-times"></i>
+        </button>
+        <button type="submit" class="search-button">
+          <i class="fas fa-search"></i>
+        </button>
+      </form>
+    </div>
+
     <!-- États de chargement -->
     <div *ngIf="isLoading" class="loading-container">
       <div class="loading-spinner"></div>
       <h4 class="status-title">Chargement des formations...</h4>
-      <p class="status-message">Patientez quelques instants</p>
     </div>
 
     <!-- État d'erreur -->
@@ -62,130 +61,108 @@
       <p class="status-message">Revenez bientôt pour découvrir nos nouveaux programmes!</p>
     </div>
 
-    <!-- Grille des formations (3 par ligne) -->
-    <div class="row justify-content-center formations-list" *ngIf="!isLoading && !errorMessage">
-  <div class="col-lg-4 col-md-6 formation-card animate-on-scroll"
-       *ngFor="let formation of formations; let i = index"
-       [style.animation-delay]="getAnimationDelay(i)">
-    <div class="card-inner">
-      <div class="img-wrap position-relative">
-        <img [src]="formation.photoPrincipale"
-             [alt]="formation.nom"
-             class="formation-img"
-             loading="lazy" />
+    <!-- Liste des formations (3 colonnes desktop, 1 colonne mobile) -->
+    <div class="formations-list" *ngIf="!isLoading && !errorMessage">
+      <div class="formation-card"
+           *ngFor="let formation of formations; let i = index"
+           [style.animation-delay]="getAnimationDelay(i)">
+        <div class="card-inner">
+          <!-- Image -->
+          <div class="img-wrap">
+            <img [src]="formation.photoPrincipale"
+                 [alt]="formation.nom"
+                 class="formation-img"
+                 loading="lazy" />
 
-        <!-- Overlay d'interaction -->
-        <div class="img-overlay">
-          <button class="btn btn-outline-light btn-sm" (click)="voirDetails(formation.slug)">
-            <i class="fas fa-eye me-2"></i>Aperçu
-          </button>
-        </div>
+            <div class="img-overlay">
+              <button class="btn-apercu" (click)="voirDetails(formation.slug)">
+                <i class="fas fa-eye me-2"></i>Aperçu
+              </button>
+            </div>
 
-        <!-- Badge promo sur image -->
-        <span *ngIf="formation.promoActive" class="promo-badge animate-bounce">
-          <i class="fas fa-bolt"></i> -{{ formation.pourcentageReduction }}%
-        </span>
-
-        <!-- Badge certificat sur image -->
-        <span *ngIf="formation.certificatDelivre" class="cert-badge">
-          <i class="fas fa-certificate"></i> Certificat
-        </span>
-      </div>
-
-      <div class="formation-card-body">
-        <h3 class="formation-title mb-2">{{ formation.nom }}</h3>
-        <div class="desc-short mb-2">{{ formation.description }}</div>
-
-        <!-- Social Proof amélioré -->
-        <div class="social-proof mb-2" *ngIf="formation.messageSocialProof || formation.placesRestantes">
-          <div class="proof-item" *ngIf="formation.messageSocialProof">
-            <i class="fas fa-users text-success"></i>
-            <span>{{ formation.messageSocialProof }}</span>
+            <!-- Badges -->
+            <span *ngIf="formation.promoActive" class="promo-badge">
+              <i class="fas fa-bolt"></i> -{{ formation.pourcentageReduction }}%
+            </span>
+            <span *ngIf="formation.certificatDelivre" class="cert-badge">
+              <i class="fas fa-certificate"></i>
+            </span>
           </div>
-          <div class="proof-item places-restantes" *ngIf="formation.placesRestantes">
-            <i class="fas fa-hourglass-half text-warning"></i>
-            <span class="text-warning fw-bold">{{ formation.placesRestantes }} places restantes</span>
-          </div>
-        </div>
 
-        <!-- Taux de remplissage amélioré -->
-        <div *ngIf="formation.tauxRemplissage !== undefined" class="progress-section mb-3">
-          <div class="progress-info d-flex justify-content-between align-items-center mb-1">
-            <small class="text-muted">Progression des inscriptions</small>
-            <small class="text-beauty-primary fw-bold">{{ formation.tauxRemplissage | number:'1.0-0' }}%</small>
-          </div>
-          <div class="progress">
-            <div class="progress-bar animate-progress"
-              [style.width.%]="formation.tauxRemplissage"
-              [attr.aria-valuenow]="formation.tauxRemplissage"
-              [attr.aria-valuemin]="0"
-              [attr.aria-valuemax]="100"></div>
+          <!-- Contenu -->
+          <div class="formation-card-body">
+            <h3 class="formation-title">{{ formation.nom }}</h3>
+            <p class="desc-short">{{ formation.description }}</p>
+
+            <!-- Social Proof simplifié -->
+            <div class="info-row" *ngIf="formation.messageSocialProof || formation.placesRestantes">
+              <span *ngIf="formation.messageSocialProof" class="info-item">
+                <i class="fas fa-users"></i> {{ formation.messageSocialProof }}
+              </span>
+              <span *ngIf="formation.placesRestantes" class="info-item warning">
+                <i class="fas fa-hourglass-half"></i> {{ formation.placesRestantes }} places
+              </span>
+            </div>
+
+            <!-- Barre de progression -->
+            <div *ngIf="formation.tauxRemplissage !== undefined" class="progress-wrap">
+              <div class="progress-bar-bg">
+                <div class="progress-bar-fill"
+                     [style.width.%]="formation.tauxRemplissage"></div>
+              </div>
+              <span class="progress-text">{{ formation.tauxRemplissage | number:'1.0-0' }}%</span>
+            </div>
+
+            <button (click)="voirDetails(formation.slug)" class="btn-en-savoir">
+              En savoir plus
+              <i class="fas fa-arrow-right"></i>
+            </button>
           </div>
         </div>
-
-        <button (click)="voirDetails(formation.slug)" class="btn-en-savoir">
-          <span>En savoir plus</span>
-          <i class="fas fa-arrow-right ms-2 arrow-icon"></i>
-        </button>
       </div>
     </div>
-  </div>
-</div>
 
-    <!-- Pagination moderne -->
-    <nav *ngIf="totalPages > 1" class="pagination-container" aria-label="Navigation des pages">
+    <!-- Pagination -->
+    <nav *ngIf="totalPages > 1" class="pagination-container">
       <div class="pagination-controls">
-        <!-- Bouton précédent -->
-        <button class="page-button"
+        <button class="page-btn"
                 [disabled]="currentPage === 0"
-                (click)="onPageChange(currentPage - 1)"
-                aria-label="Page précédente">
+                (click)="onPageChange(currentPage - 1)">
           <i class="fas fa-chevron-left"></i>
         </button>
 
-        <!-- Pages -->
         <button *ngFor="let page of getVisiblePages()"
-                class="page-button"
+                class="page-btn"
                 [class.active]="page === currentPage"
-                (click)="onPageChange(page)"
-                [attr.aria-label]="'Page ' + (page + 1)"
-                [attr.aria-current]="page === currentPage ? 'page' : null">
+                (click)="onPageChange(page)">
           {{ page + 1 }}
         </button>
 
-        <!-- Bouton suivant -->
-        <button class="page-button"
+        <button class="page-btn"
                 [disabled]="currentPage === totalPages - 1"
-                (click)="onPageChange(currentPage + 1)"
-                aria-label="Page suivante">
+                (click)="onPageChange(currentPage + 1)">
           <i class="fas fa-chevron-right"></i>
         </button>
       </div>
 
-      <!-- Informations de pagination -->
       <div class="pagination-info">
-        Page {{ currentPage + 1 }} sur {{ totalPages }}
-        ({{ totalElements }} formations au total)
+        Page {{ currentPage + 1 }} sur {{ totalPages }} ({{ totalElements }} formations)
       </div>
     </nav>
 
-    <!-- Call to action moderne -->
+    <!-- Call to action -->
     <div class="cta-section">
       <div class="cta-container">
         <h3 class="cta-title">Prêt(e) à commencer votre formation ?</h3>
         <p class="cta-description">
-          Contactez-nous dès aujourd'hui pour plus d'informations et débutez votre parcours vers l'excellence
+          Contactez-nous dès aujourd'hui pour plus d'informations
         </p>
         <div class="cta-buttons">
-          <a href="tel:+237000000000"
-             class="cta-button"
-             aria-label="Appeler pour plus d'informations">
-            <i class="fas fa-phone me-2"></i>Appelez-nous
+          <a href="tel:+237000000000" class="cta-btn">
+            <i class="fas fa-phone"></i> Appelez-nous
           </a>
-          <a href="mailto:contact@beaute-excellence.com"
-             class="cta-button outline"
-             aria-label="Envoyer un email pour plus d'informations">
-            <i class="fas fa-envelope me-2"></i>Écrivez-nous
+          <a href="mailto:contact@beaute-excellence.com" class="cta-btn outline">
+            <i class="fas fa-envelope"></i> Écrivez-nous
           </a>
         </div>
       </div>
